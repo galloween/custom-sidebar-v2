@@ -1,4 +1,4 @@
-// updated 15-11-21 13:13
+// updated 15-11-21 15:51
 // -----------------------
 // Custom Sidebar for Home Assistant
 //
@@ -34,12 +34,10 @@
 
   // window.$customSidebarV2_orderConfig = { order: [...] };
 
-  window.$customSidebarV2_orderConfig = null;
-
   //------------------
 
-  let tryCounter = 0;
-  window.$customSidebarV2_Loaded = false;
+  !window.$customSidebarV2_tryCounter &&
+    (window.$customSidebarV2_tryCounter = 0);
   let SideBarElement = null;
   let DrawerLayoutElement = null;
   let TitleElement = null;
@@ -118,7 +116,7 @@
               moveItem(SideBarElement, item, i);
             } else {
               shouldMove && (item.moved = true);
-              createItem(SideBarElement, item, i);
+              item.href && createItem(SideBarElement, item, i);
             }
           }
         });
@@ -303,7 +301,7 @@
           }
         );
       }
-    } else if (++tryCounter > 10) {
+    } else if (++window.$customSidebarV2_tryCounter > 10) {
       finish(false, 'Tried 10 times and gave up');
     }
   }
