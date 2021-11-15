@@ -1,7 +1,10 @@
 # custom-sidebar-v2
 
-this is a quick refactor of https://github.com/Villhellm/custom-sidebar <br>
-to make it work with recent versions of `Home Assistant`
+This is a refactor of https://github.com/Villhellm/custom-sidebar <br>
+to make it work with recent versions of `Home Assistant`.
+
+Villhellm's code was refactored with simplicity and performance in mind. <br>
+The YAML parser that was part of the original code has been removed and so the config should now be provided as JSON.
 
 ## HACS Installation
 Go to HACS / FrontEnd, add custom repository, then find it in the list and click Download.
