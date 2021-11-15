@@ -4,6 +4,21 @@ this is a quick refactor of https://github.com/Villhellm/custom-sidebar
 to make it work with recent versions of `Home Assistant`
 
 ## HACS Installation
+Go to HACS / FrontEnd, add custom repository, then find it in the list and click Download.
+<table><tr><td>
+<img src="https://user-images.githubusercontent.com/2077754/141781008-96a47c6c-bba0-4f1e-aff5-b8cefb054edb.png">
+</td><td>
+<img src="https://user-images.githubusercontent.com/2077754/141780946-7fa632a8-6b3b-462c-83de-b110293d0d23.png">
+</td><td>
+<img src="https://user-images.githubusercontent.com/2077754/141781150-94b5331f-a5dc-4a6e-855b-7685067e588e.png">
+</td></tr></table>
+- add in `confgiguration.yaml` (unless you use [browser_mod](https://github.com/thomasloven/hass-browser_mod)):
+```
+frontend:
+  extra_module_url:
+    - /hacsfiles/custom-sidebar-v2/custom-sidebar-v2.js
+```
+
 
 ## Manual install
 - put `custom-sidebar-v2.js` in `<config directory>/www/`
