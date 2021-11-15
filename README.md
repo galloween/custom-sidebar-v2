@@ -1,9 +1,9 @@
 # custom-sidebar-v2
 
-This is a refactor of https://github.com/Villhellm/custom-sidebar <br>
+This is a refactor of the original [Custom Sidebar plugin](https://github.com/Villhellm/custom-sidebar) by [@Villhellm](https://github.com/Villhellm)  <br>
 to make it work with recent versions of `Home Assistant`.
 
-Villhellm's code was refactored with simplicity and performance in mind. <br>
+[Villhellm](https://github.com/Villhellm)'s code was refactored with simplicity and performance in mind. <br>
 The YAML parser that was part of the original code has been removed and so the config should now be provided as JSON.
 
 ## HACS Installation
