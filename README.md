@@ -1,13 +1,13 @@
 # custom-sidebar-v2
 
 this is a quick refactor of https://github.com/Villhellm/custom-sidebar
-to make it work with recent versions of Home Assistant
+to make it work with recent versions of `Home Assistant`
 
-for config please refer to original repo
+## HACS Installation
 
 ## Manual install
-- put custom-sidebar-v2.js in <config directory>/www/
-- add in confgiguration.yaml:
+- put `custom-sidebar-v2.js` in `<config directory>/www/`
+- add in `confgiguration.yaml`:
 ```
 frontend:
   extra_module_url:
@@ -15,8 +15,38 @@ frontend:
 ```
 
 ## Configuration
-config is now in JSON format (not yaml).
-You need to put sidebar-order.json in <config directory>/www/
+config is now in `JSON` format (not yaml). <br>
+Save it as `sidebar-order.json` and put it in `<config directory>/www/`.
+
+For full example see this: https://raw.githubusercontent.com/galloween/custom-sidebar-v2/main/sidebar-order.json
+Also check [original repo docs](https://github.com/Villhellm/custom-sidebar/blob/master/README.md) for explanations.
+
+Short example:
+```
+  {
+  "order": [
+    {
+      "new_item": true,
+      "item": "Google",
+      "href": "https://mrdoob.com/projects/chromeexperiments/google-gravity/",
+      "icon": "mdi:earth",
+      "target": "_blank"
+    },
+    {
+      "item": "overview"
+    },
+    {
+      "item": "supervisor"
+    },
+    {
+      "new_item": true,
+      "item": "Integrations",
+      "href": "/config/integrations",
+      "icon": "mdi:puzzle"
+    }
+  ]
+ }
+```
 
 ## Notes
 - "Exceptions" (from Villhellm's original implementation) are not supported.
