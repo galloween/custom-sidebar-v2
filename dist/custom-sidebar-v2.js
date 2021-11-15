@@ -14,7 +14,7 @@
 //
 // CONFIG:
 // config is now in JSON format (not yaml) and can be included right here
-//  (see orderConfig below).
+//  (see window.$customSidebarV2_orderConfig below).
 // alternatively, you can put the config object ({...}) in sidebar-order.json
 // in <config directory>/www/
 
@@ -31,15 +31,15 @@
 (() => {
   //------------------
   // CONFIG
-  
-  // let orderConfig = { order: [...] };
-  
-  let orderConfig = null;
-   
+
+  // window.$customSidebarV2_orderConfig = { order: [...] };
+
+  window.$customSidebarV2_orderConfig = null;
+
   //------------------
 
   let tryCounter = 0;
-  let Loaded = false;
+  window.$customSidebarV2_Loaded = false;
   let SideBarElement = null;
   let DrawerLayoutElement = null;
   let TitleElement = null;
@@ -107,11 +107,19 @@
         spacerElement.style.flexGrow = 5;
 
         order.forEach((item, i) => {
-          if (item.new_item === true && !item.created) {
-            createItem(SideBarElement, item, i);
-          }
-          if (!item.new_item && !item.moved) {
-            moveItem(SideBarElement, item, i);
+          const shouldCreate = item.new_item && !item.created;
+          const shouldMove = !item.new_item && !item.moved;
+
+          if (shouldCreate || shouldMove) {
+            const existingItem = findItem(SideBarElement, item);
+            if (existingItem) {
+              item.itemElement = existingItem;
+              shouldCreate && (item.created = true);
+              moveItem(SideBarElement, item, i);
+            } else {
+              shouldMove && (item.moved = true);
+              createItem(SideBarElement, item, i);
+            }
           }
         });
       }
@@ -157,14 +165,15 @@
 
   function createItem(elements, config_entry, index) {
     try {
-      const cln = getSidebarItem(elements).cloneNode(true);
+      const cln =
+        config_entry.itemElement || getSidebarItem(elements).cloneNode(true);
       if (cln) {
         //
         updateIcon(cln, config_entry.icon);
         updateName(cln, config_entry.item);
 
         cln.href = config_entry.href;
-        cln.target = config_entry.target||'';
+        cln.target = config_entry.target || '';
 
         cln.setAttribute(
           'data-panel',
@@ -178,6 +187,7 @@
         elements.insertBefore(cln, elements.children[0]);
 
         config_entry.created = true;
+        config_entry.itemElement = cln;
       }
     } catch (e) {
       console.warn('Custom sidebar: Error creating item', e);
@@ -204,7 +214,8 @@
       return;
     }
     try {
-      const elementToMove = findItem(root, config_entry);
+      const elementToMove =
+        config_entry.itemElement || findItem(root, config_entry);
 
       if (elementToMove) {
         if (config_entry.href) {
@@ -232,7 +243,9 @@
         }
         elementToMove.setAttribute('aria-selected', 'false');
         elementToMove.className = '';
+
         config_entry.moved = true;
+        config_entry.itemElement = elementToMove;
       } else {
         console.warn('Custom sidebar: element to move not found', config_entry);
       }
@@ -264,17 +277,21 @@
     SideBarElement = getSidebar();
     SidebarItemElement = SideBarElement && getSidebarItem(SideBarElement);
 
-    if (SideBarElement && SidebarItemElement && !Loaded) {
-      Loaded = true;
+    if (
+      SideBarElement &&
+      SidebarItemElement &&
+      !window.$customSidebarV2_Loaded
+    ) {
+      window.$customSidebarV2_Loaded = true;
 
-      if (orderConfig) {
-        process(orderConfig);
+      if (window.$customSidebarV2_orderConfig) {
+        process(window.$customSidebarV2_orderConfig);
       } else {
         fetch('/local/sidebar-order.json').then(
           (resp) => {
             resp.json().then(
               (config) => {
-                process((orderConfig = config));
+                process((window.$customSidebarV2_orderConfig = config));
               },
               (err) => {
                 finish(false, err);
