@@ -1,6 +1,6 @@
 # custom-sidebar-v2
 
-this is a quick refactor of https://github.com/Villhellm/custom-sidebar
+this is a quick refactor of https://github.com/Villhellm/custom-sidebar <br>
 to make it work with recent versions of `Home Assistant`
 
 ## HACS Installation
@@ -12,6 +12,7 @@ Go to HACS / FrontEnd, add custom repository, then find it in the list and click
 </td><td>
 <img src="https://user-images.githubusercontent.com/2077754/141781150-94b5331f-a5dc-4a6e-855b-7685067e588e.png">
 </td></tr></table>
+
 - add in `confgiguration.yaml` (unless you use [browser_mod](https://github.com/thomasloven/hass-browser_mod)):
 ```
 frontend:
@@ -21,6 +22,8 @@ frontend:
 
 
 ## Manual install
+<img src="https://user-images.githubusercontent.com/2077754/141674738-5ea08dea-a4aa-41d9-a246-feefde17bb45.png" width="700">
+
 - put `custom-sidebar-v2.js` in `<config directory>/www/`
 - add in `confgiguration.yaml`:
 ```
@@ -31,9 +34,10 @@ frontend:
 
 ## Configuration
 config is now in `JSON` format (not yaml). <br>
-Save it as `sidebar-order.json` and put it in `<config directory>/www/`.
+Save it as `sidebar-order.json` and put it in `<config directory>/www/`. <br>
+If using manuall install, you can include the config object directly in the .js file (follow comments there).
 
-For full example see this: https://raw.githubusercontent.com/galloween/custom-sidebar-v2/main/sidebar-order.json
+For full example see this: https://raw.githubusercontent.com/galloween/custom-sidebar-v2/main/sidebar-order.json <br>
 Also check [original repo docs](https://github.com/Villhellm/custom-sidebar/blob/master/README.md) for explanations.
 
 Short example:
