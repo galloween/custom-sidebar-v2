@@ -32,9 +32,9 @@
   //------------------
   // CONFIG
   
-  // const orderConfig = { order: [...] };
+  // let orderConfig = { order: [...] };
   
-  const orderConfig = null;
+  let orderConfig = null;
    
   //------------------
 
@@ -96,7 +96,7 @@
         SideBarElement.style.display = 'flex';
         SideBarElement.style.flexDirection = 'column';
 
-        var spacerElement = Array.from(SideBarElement.children).find(
+        const spacerElement = Array.from(SideBarElement.children).find(
           (element) => {
             return (
               element.tagName == 'DIV' && element.classList.contains('spacer')
@@ -122,9 +122,9 @@
 
   function updateIcon(element, icon) {
     try {
-      var icon_item = element.querySelector('paper-icon-item');
-      var icn = icon_item.querySelector('ha-icon');
-      var svgIcn = icon_item.querySelector('ha-svg-icon');
+      const icon_item = element.querySelector('paper-icon-item');
+      let icn = icon_item.querySelector('ha-icon');
+      const svgIcn = icon_item.querySelector('ha-svg-icon');
 
       if (icon_item && !icn) {
         if (svgIcn) {
@@ -142,7 +142,7 @@
   }
 
   function findNameElement(element) {
-    var txtEl = element.querySelector('paper-icon-item');
+    let txtEl = element.querySelector('paper-icon-item');
     txtEl = (txtEl && txtEl.querySelector('.item-text')) || {};
     return txtEl;
   }
@@ -157,7 +157,7 @@
 
   function createItem(elements, config_entry, index) {
     try {
-      var cln = getSidebarItem(elements).cloneNode(true);
+      const cln = getSidebarItem(elements).cloneNode(true);
       if (cln) {
         //
         updateIcon(cln, config_entry.icon);
@@ -291,5 +291,5 @@
     }
   }
 
-  var runInterval = setInterval(run, 1000);
+  const runInterval = setInterval(run, 1000);
 })();
