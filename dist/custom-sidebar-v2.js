@@ -13,7 +13,7 @@
 //          - /local/custom-sidebar.js
 //
 // CONFIG:
-// config is now in JSON format (not yaml) and is included right here
+// config is now in JSON format (not yaml) and can be included right here
 //  (see orderConfig below).
 // alternatively, you can put the config object ({...}) in sidebar-order.json
 // in <config directory>/www/
@@ -27,105 +27,13 @@
 //
 // by @galloween
 //
+
 (() => {
   //------------------
   // CONFIG
-
-  const orderConfig = {
-    order: [
-      {
-        new_item: true,
-        item: 'Google',
-        href: 'https://mrdoob.com/projects/chromeexperiments/google-gravity/',
-        icon: 'mdi:earth',
-        target: '_blank'
-      },
-      {
-        item: 'overview',
-      },
-      {
-        item: 'supervisor',
-      },
-      {
-        new_item: true,
-        item: 'Integrations',
-        href: '/config/integrations',
-        icon: 'mdi:puzzle',
-      },
-      {
-        new_item: true,
-        item: 'Entities',
-        href: '/config/entities',
-        icon: 'mdi:hexagon-multiple',
-      },
-      {
-        new_item: true,
-        item: 'Automations',
-        href: '/config/automation/dashboard',
-        icon: 'mdi:robot',
-      },
-      {
-        item: 'file editor',
-      },
-      {
-        item: 'terminal',
-      },
-      {
-        item: 'hacs',
-      },
-      {
-        item: 'configuration',
-        bottom: true,
-      },
-      {
-        new_item: true,
-        item: 'Server Controls',
-        href: '/config/server_control',
-        icon: 'mdi:server',
-        bottom: true,
-      },
-      {
-        item: 'history',
-        bottom: true,
-      },
-      {
-        item: 'logbook',
-        bottom: true,
-      },
-      {
-        new_item: true,
-        item: 'Logs',
-        bottom: true,
-        href: '/config/logs',
-        icon: 'mdi:math-log',
-      },
-      {
-        item: 'developer tools',
-        bottom: true,
-      },
-      {
-        item: 'snapshots',
-        bottom: true,
-      },
-      {
-        item: 'backups',
-        bottom: true,
-      },
-      {
-        item: 'map',
-        hide: true,
-      },
-      {
-        item: 'energy',
-        hide: true,
-      },
-      {
-        item: 'media browser',
-        hide: true,
-      },
-    ],
-  };
-
+  
+  // const orderConfig = { order: [...] };
+   
   //------------------
 
   let tryCounter = 0;
