@@ -231,7 +231,7 @@
           elementToMove.setAttribute('data-custom-sidebar-processed', 'move');
         }
         elementToMove.setAttribute('aria-selected', 'false');
-        cln.className = '';
+        elementToMove.className = '';
         config_entry.moved = true;
       } else {
         console.warn('Custom sidebar: element to move not found', config_entry);
