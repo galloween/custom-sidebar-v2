@@ -19,7 +19,6 @@
 // in <config directory>/www/
 
 // NOTES:
-// - "Exceptions" (from Villhellm's original implementation) are not supported.
 // - all items in config.order should have unique "item" property.
 // - items with "hide: true" are not considered in new order,
 //   all other items will be ordered as listed in config.order
@@ -38,10 +37,33 @@
 
   !window.$customSidebarV2_tryCounter &&
     (window.$customSidebarV2_tryCounter = 0);
-  let SideBarElement = null;
-  let DrawerLayoutElement = null;
-  let TitleElement = null;
-  let SidebarItemElement = null;
+
+  let SideBarElement,
+    DrawerLayoutElement,
+    TitleElement,
+    SidebarItemElement,
+    Haobj;
+
+  function getHaobj() {
+    return Haobj || (Haobj = document.querySelector('home-assistant')?.hass);
+  }
+
+  function getCurrentUser() {
+    const haObj = getHaobj();
+    return (
+      (haObj &&
+        haObj.user &&
+        haObj.user.name &&
+        haObj.user.name.toLowerCase()) ||
+      ''
+    );
+  }
+
+  function getCurrentDevice() {
+    return navigator && navigator.userAgent
+      ? navigator.userAgent.toLowerCase()
+      : '';
+  }
 
   function getDrawerLayout() {
     if (DrawerLayoutElement) {
@@ -73,7 +95,7 @@
       return SidebarItemElement;
     }
     if (!root || !root.children) {
-      return null;
+      return;
     }
     return Array.from(root.children).find((element) => {
       return (
@@ -252,15 +274,55 @@
     }
   }
 
+  function getListAsArray(list) {
+    if (Array.isArray(list)) {
+      return list;
+    }
+    if (typeof list === 'string') {
+      list = list.split(/\s*,\s*/);
+    }
+    return [].concat(list || []);
+  }
+
+  function getOrderWithExceptions(order, exceptions) {
+    try {
+      if (Array.isArray(exceptions)) {
+        const currentUser = getCurrentUser(),
+          currentDevice = getCurrentDevice();
+        exceptions = exceptions.filter((exc) => {
+          return (
+            exc &&
+            Array.isArray(config.order) &&
+            ((exc.user && getListAsArray(exc.user).includes(currentUser)) ||
+              (exc.not_user &&
+                !getListAsArray(exc.not_user).includes(currentUser)) ||
+              (exc.device &&
+                getListAsArray(exc.device).some((d) =>
+                  currentDevice.includes(d)
+                )))
+          );
+        });
+        if (exceptions.some((e) => e.base_order !== true)) {
+          order = [];
+        }
+        exceptions.forEach((e) => order.push(...e.order));
+      }
+    } catch (e) {
+      console.warn('Custom sidebar: Error processing exceptions', e);
+    }
+    return order;
+  }
+
   function process(config) {
-    if (!config || !config.order) {
+    if (!config || !Array.isArray(config.order)) {
       finish(false, 'No config found');
       return;
     }
     if (config.title) {
       setTitle(config.title);
     }
-    rearrange(config.order);
+    const order = getOrderWithExceptions(config.order, config.exceptions);
+    rearrange(order);
     finish(true);
   }
 

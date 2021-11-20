@@ -90,5 +90,12 @@
       "item": "media browser",
       "hide": true
     }
+  ],
+  "exceptions": [
+    {
+      "user": "Not Me",
+      "base_order": false,
+      "order": []
+    }
   ]
 }

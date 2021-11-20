@@ -71,7 +71,6 @@ Short example:
 ```
 
 ## Notes
-- "Exceptions" (from Villhellm's original implementation) are not supported.
 - all items in config.order should have unique "item" property.
 - items with "hide: true" are not considered in new order,
   all other items will be ordered as listed in config.order
