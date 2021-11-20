@@ -93,7 +93,10 @@
   ],
   "exceptions": [
     {
-      "user": "Not Me",
+      "user": [
+        "Jim Hawkins",
+        "Long John Silver"
+      ],
       "base_order": false,
       "order": []
     }
