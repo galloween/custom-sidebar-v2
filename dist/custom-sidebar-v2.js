@@ -292,7 +292,7 @@
         exceptions = exceptions.filter((exc) => {
           return (
             exc &&
-            Array.isArray(config.order) &&
+            Array.isArray(exc.order) &&
             ((exc.user && getListAsArray(exc.user).includes(currentUser)) ||
               (exc.not_user &&
                 !getListAsArray(exc.not_user).includes(currentUser)) ||
