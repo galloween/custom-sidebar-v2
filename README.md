@@ -76,6 +76,21 @@ Short example:
   all other items will be ordered as listed in config.order
 - any items present in Sidebar, but not in config.order, will be shown on top of the list
 
+## Exceptions
+You can define user-specific order using `exceptions` feature (see [details in original repo](https://github.com/Villhellm/custom-sidebar#exceptions))
+```
+{ 
+  "exceptions": [
+    {
+      "user": ["Jim Hawkins", "Long John Silver"],
+      "order": [
+          ...
+      ]
+    }
+  ]
+}
+```
+
 ## Combining with Iframe Panel to show external content inside Home Assitant
 If you use [Home Assistant's Iframe Panel feature](https://www.home-assistant.io/integrations/panel_iframe/) and have some iframe_panel links configured in `configuration.yaml`
 ```
