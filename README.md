@@ -1,4 +1,5 @@
-# custom-sidebar-v2
+# Home Assistant Custom Sidebar v2
+Extension that allows you to rearrange, hide, and add Home Assistant sidebar menu items.
 
 This is a refactor of the original [Custom Sidebar plugin](https://github.com/Villhellm/custom-sidebar) by [@Villhellm](https://github.com/Villhellm)  <br>
 to make it work with recent versions of `Home Assistant`.
