@@ -76,4 +76,29 @@ Short example:
   all other items will be ordered as listed in config.order
 - any items present in Sidebar, but not in config.order, will be shown on top of the list
 
+## Combining with Iframe Panel to show external content inside Home Assitant
+If you use [Home Assistant's Iframe Panel feature](https://www.home-assistant.io/integrations/panel_iframe/) and have some iframe_panel links configured in `configuration.yaml`
+```
+panel_iframe:
+  router:
+    title: "Router"
+    url: "http://192.168.1.1"
+    icon: mdi:router-wireless
+  fridge:
+    title: "Fridge"
+    url: "http://192.168.1.5"
+    icon: mdi:fridge
+```
+then you can reorder iframe links, same as regular ones, in `sidebar-order.json`:
+```
+{ order: [
+  { "item": "fridge" },
+  { "item": "overview" },
+  { "item": "router" }
+  ... 
+]}
+```
+<img src="https://user-images.githubusercontent.com/2077754/142756355-21c96b37-130c-4af3-8a81-2de97261d1ff.png">
+
+-----------------------
 by @galloween
