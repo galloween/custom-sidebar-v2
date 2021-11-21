@@ -117,4 +117,4 @@ then you can reorder iframe links, same as regular ones, in `sidebar-order.json`
 <img src="https://user-images.githubusercontent.com/2077754/142756355-21c96b37-130c-4af3-8a81-2de97261d1ff.png">
 
 -----------------------
-by @galloween
+by [@galloween](https://github.com/galloween)
