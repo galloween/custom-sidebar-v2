@@ -1,3 +1,5 @@
+**Note**: some useful insights for troubleshooting in this thread: https://github.com/Villhellm/custom-sidebar/issues/40
+
 # Home Assistant Custom Sidebar v2
 Custom [HACS](https://hacs.xyz) `Lovelace Plugin` that allows you to rearrange, hide, and add [Home Assistant](https://www.home-assistant.io) sidebar menu items.
 
