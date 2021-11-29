@@ -74,11 +74,11 @@ Short example:
 ```
 
 ## Notes
-- all items in config.order should have unique "item" property.
+- all items in config.order should have unique "item" property
 - check out [this post](https://github.com/Villhellm/custom-sidebar/issues/40#issuecomment-982064937) on how to find the name of the menu item
 - items with "hide: true" are not considered in new order,
   all other items will be ordered as listed in config.order
-- any items present in Sidebar, but not in config.order, will be shown on the <u>bottom</u> of the top part of the list
+- any items present in Sidebar, but not in config.order, will be shown on the **bottom** of the top part of the list
 
 ## Exceptions
 You can define user-specific order using `exceptions` feature (see [details in original repo](https://github.com/Villhellm/custom-sidebar#exceptions))
