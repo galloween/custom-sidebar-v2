@@ -147,7 +147,7 @@
         });
 
         Array.from(
-          Sidebar.querySelectorAll(
+          SideBarElement.querySelectorAll(
             'a[aria-role="option"]:not([data-custom-sidebar-processed]'
           )
         ).forEach((element, index) => {
