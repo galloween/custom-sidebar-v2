@@ -44,6 +44,9 @@
     SidebarItemElement,
     Haobj;
 
+  const spacerOrder = 100,
+    notProcessedOrder = 50;
+
   function getHaobj() {
     return Haobj || (Haobj = document.querySelector('home-assistant')?.hass);
   }
@@ -123,7 +126,7 @@
             );
           }
         );
-        spacerElement.style.order = 100;
+        spacerElement.style.order = spacerOrder;
         spacerElement.style.flexGrow = 5;
 
         order.forEach((item, i) => {
@@ -141,6 +144,14 @@
               item.href && createItem(SideBarElement, item, i);
             }
           }
+        });
+
+        Array.from(
+          Sidebar.querySelectorAll(
+            'a[aria-role="option"]:not([data-custom-sidebar-processed]'
+          )
+        ).forEach((element, index) => {
+          element.style.order = notProcessedOrder + index;
         });
       }
     } catch (e) {
@@ -202,7 +213,9 @@
         cln.setAttribute('data-custom-sidebar-processed', 'create');
         cln.setAttribute('aria-selected', 'false');
         cln.className = '';
-        cln.style.order = config_entry.bottom ? index + 100 : index + 1;
+        cln.style.order = config_entry.bottom
+          ? index + 1 + spacerOrder
+          : index + 1;
 
         elements.insertBefore(cln, elements.children[0]);
 
@@ -215,18 +228,25 @@
   }
 
   function findItem(elements, config_entry) {
-    const item = Array.from(elements.children).find((element) => {
-      if (element.tagName !== 'A') {
-        return false;
-      }
-      const currentName = findNameElement(element)
-        .innerHTML.replace(/<\!--.+-->/g, '')
-        .trim();
-      return config_entry.exact
-        ? currentName == config_entry.item
-        : currentName.toLowerCase().includes(config_entry.item.toLowerCase());
-    });
-    return item;
+    try {
+      const item = Array.from(elements.children).find((element) => {
+        if (element.tagName !== 'A') {
+          return false;
+        }
+        const currentName = findNameElement(element).innerText?.trim();
+        const currentPanel = element.getAttribute('data-panel');
+
+        return config_entry.exact
+          ? currentName == config_entry.item
+          : currentName
+              .toLowerCase()
+              .includes(config_entry.item.toLowerCase()) ||
+              currentPanel === config_entry.item.toLowerCase();
+      });
+      return item;
+    } catch (e) {
+      console.warn('Custom sidebar: Error finding item', e);
+    }
   }
 
   function moveItem(root, config_entry, index) {
@@ -257,7 +277,7 @@
         } else {
           elementToMove.style.display = 'block';
           elementToMove.style.order = config_entry.bottom
-            ? index + 100
+            ? index + 1 + spacerOrder
             : index + 1;
           elementToMove.setAttribute('data-custom-sidebar-processed', 'move');
         }
