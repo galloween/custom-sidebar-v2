@@ -1,4 +1,7 @@
-# custom-sidebar-v2
+**Note**: some useful insights for troubleshooting in [this thread](https://github.com/Villhellm/custom-sidebar/issues/40#issuecomment-968252152).
+
+# Home Assistant Custom Sidebar v2
+Custom [HACS](https://hacs.xyz) `Lovelace Plugin` that allows you to rearrange, hide, and add [Home Assistant](https://www.home-assistant.io) sidebar menu items.
 
 This is a refactor of the original [Custom Sidebar plugin](https://github.com/Villhellm/custom-sidebar) by [@Villhellm](https://github.com/Villhellm)  <br>
 to make it work with recent versions of `Home Assistant`.
@@ -76,4 +79,44 @@ Short example:
   all other items will be ordered as listed in config.order
 - any items present in Sidebar, but not in config.order, will be shown on top of the list
 
-by @galloween
+## Exceptions
+You can define user-specific order using `exceptions` feature (see [details in original repo](https://github.com/Villhellm/custom-sidebar#exceptions))
+```
+{ 
+  "exceptions": [
+    {
+      "user": ["Jim Hawkins", "Long John Silver"],
+      "order": [
+          ...
+      ]
+    }
+  ]
+}
+```
+
+## Combining with Iframe Panel to show external content inside Home Assitant
+If you use [Home Assistant's Iframe Panel feature](https://www.home-assistant.io/integrations/panel_iframe/) and have some iframe_panel links configured in `configuration.yaml`
+```
+panel_iframe:
+  router:
+    title: "Router"
+    url: "http://192.168.1.1"
+    icon: mdi:router-wireless
+  fridge:
+    title: "Fridge"
+    url: "http://192.168.1.5"
+    icon: mdi:fridge
+```
+then you can reorder iframe links, same as regular ones, in `sidebar-order.json`:
+```
+{ order: [
+  { "item": "fridge" },
+  { "item": "overview" },
+  { "item": "router" }
+  ... 
+]}
+```
+<img src="https://user-images.githubusercontent.com/2077754/142756355-21c96b37-130c-4af3-8a81-2de97261d1ff.png">
+
+-----------------------
+by [@galloween](https://github.com/galloween)
