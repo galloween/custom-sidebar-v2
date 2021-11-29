@@ -75,14 +75,15 @@ Short example:
 
 ## Notes
 - all items in config.order should have unique "item" property.
+- check out [this post](https://github.com/Villhellm/custom-sidebar/issues/40#issuecomment-982064937) on how to find the name of the menu item
 - items with "hide: true" are not considered in new order,
   all other items will be ordered as listed in config.order
-- any items present in Sidebar, but not in config.order, will be shown on top of the list
+- any items present in Sidebar, but not in config.order, will be shown on the <u>bottom</u> of the top part of the list
 
 ## Exceptions
 You can define user-specific order using `exceptions` feature (see [details in original repo](https://github.com/Villhellm/custom-sidebar#exceptions))
 ```
-{ 
+{
   "exceptions": [
     {
       "user": ["Jim Hawkins", "Long John Silver"],
@@ -113,7 +114,7 @@ then you can reorder iframe links, same as regular ones, in `sidebar-order.json`
   { "item": "fridge" },
   { "item": "overview" },
   { "item": "router" }
-  ... 
+  ...
 ]}
 ```
 <img src="https://user-images.githubusercontent.com/2077754/142756355-21c96b37-130c-4af3-8a81-2de97261d1ff.png">

@@ -152,6 +152,7 @@
           )
         ).forEach((element, index) => {
           element.style.order = notProcessedOrder + index;
+          element.setAttribute('data-custom-sidebar-processed', 'leftover');
         });
       }
     } catch (e) {
