@@ -381,17 +381,18 @@
       } else {
         fetch('/local/sidebar-order.json').then(
           (resp) => {
+            console.log(resp);
             resp.json().then(
               (config) => {
                 process((window.$customSidebarV2_orderConfig = config));
               },
               (err) => {
-                finish(false, ['Error loading JSON config (1)', err]);
+                finish(false, ['Error loading JSON config', err]);
               }
             );
           },
           (err) => {
-            finish(false, ['Error loading JSON config (2)', err]);
+            finish(false, ['Error loading JSON config', err]);
           }
         );
       }
