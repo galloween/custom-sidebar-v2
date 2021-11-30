@@ -1,5 +1,5 @@
 /**
- * updated 30-11-21 13:18
+ * updated 30-11-21 20:56
  * ----------------------------------
  * Custom Sidebar for Home Assistant
  * ----------------------------------
@@ -30,6 +30,36 @@
 
   const spacerOrder = 100,
     notProcessedOrder = 50;
+
+  function asArray(valOrArr) {
+    return !valOrArr || Array.isArray(valOrArr) ? valOrArr : [valOrArr];
+  }
+
+  function getListAsArray(list) {
+    if (Array.isArray(list)) {
+      return list;
+    }
+    if (typeof list === 'string') {
+      list = list.split(/\s*,\s*/);
+    }
+    return [].concat(list || []);
+  }
+
+  function log(how, what, ...stuff) {
+    const style = {
+      error: 'background:#8b0000; color:white; padding:2px; border-radius:2px',
+      warn: 'background:#8b0000; color:white; padding:2px; border-radius:2px',
+      log: 'background:#222; color:#bada55; padding:2px; border-radius:2px;',
+    };
+    if (how !== 'warn' && how !== 'error') {
+      how = 'log';
+    }
+    console[how](
+      '%cCustom sidebar: ' + what + ' (version: ' + ver + ')',
+      style[how],
+      ...(asArray(stuff) || [''])
+    );
+  }
 
   function getHaobj() {
     return Haobj || (Haobj = document.querySelector('home-assistant')?.hass);
@@ -140,7 +170,7 @@
         });
       }
     } catch (e) {
-      console.warn('Custom sidebar: Error rearranging order', e);
+      log('warn', 'Error rearranging order', e);
       return false;
     }
     return true;
@@ -163,7 +193,7 @@
       }
       icn.setAttribute('icon', icon);
     } catch (e) {
-      console.warn('Custom sidebar: Error updating icon', e);
+      log('warn', 'Error updating icon', e);
     }
   }
 
@@ -177,7 +207,7 @@
     try {
       findNameElement(element).innerHTML = name;
     } catch (e) {
-      console.warn('Custom sidebar: Error updating text', e);
+      log('warn', 'Error updating text', e);
     }
   }
 
@@ -199,7 +229,7 @@
       });
       return item;
     } catch (e) {
-      console.warn('Custom sidebar: Error finding item', e);
+      log('warn', 'Error finding item', e);
       return null;
     }
   }
@@ -242,7 +272,7 @@
         config_entry.itemElement = cln;
       }
     } catch (e) {
-      console.warn('Custom sidebar: Error creating item', e);
+      log('warn', 'Error creating item', e);
     }
   }
 
@@ -284,21 +314,11 @@
         config_entry.moved = true;
         config_entry.itemElement = elementToMove;
       } else {
-        console.warn('Custom sidebar: element to move not found', config_entry);
+        log('warn', 'Element to move not found', config_entry);
       }
     } catch (e) {
-      console.warn('Custom sidebar: Error moving item', e);
+      log('warn', 'Error moving item', e);
     }
-  }
-
-  function getListAsArray(list) {
-    if (Array.isArray(list)) {
-      return list;
-    }
-    if (typeof list === 'string') {
-      list = list.split(/\s*,\s*/);
-    }
-    return [].concat(list || []);
   }
 
   function getOrderWithExceptions(order, exceptions) {
@@ -325,7 +345,7 @@
         exceptions.forEach((e) => order.push(...e.order));
       }
     } catch (e) {
-      console.warn('Custom sidebar: Error processing exceptions', e);
+      log('warn', 'Error processing exceptions', e);
     }
     return order;
   }
@@ -342,26 +362,11 @@
     finish(rearrange(order));
   }
 
-  function asArray(valOrArr) {
-    return !valOrArr || Array.isArray(valOrArr) ? valOrArr : [valOrArr];
-  }
-
   function finish(success, error) {
     clearInterval(runInterval);
     window.$customSidebarV2_Loaded = success ? 'success' : 'error';
-    !success &&
-      console.warn(
-        '%cCustom Sidebar failed (version: ' + ver + ')',
-        'background:#8b0000; color:white; padding:2px; border-radius:2px',
-        ...(asArray(error) || [''])
-      );
-    success &&
-      console.log(
-        success === true
-          ? '%cCustom Sidebar loaded successfully (version: ' + ver + ')'
-          : '%c' + success + ' (version: ' + ver + ')',
-        'background:#222; color:#bada55; padding:2px; border-radius:2px;'
-      );
+    !success && log('warn', 'Failed', error);
+    success && log('log', 'Loaded successfully!');
   }
 
   function run() {
@@ -381,9 +386,21 @@
       } else {
         fetch('/local/sidebar-order.json').then(
           (resp) => {
-            console.log(resp);
+            if (!resp.ok || resp.status == 404) {
+              finish(
+                false,
+                'JSON config file not found.\nMake sure you have valid config in /config/www/sidebar-order.json file.'
+              );
+              return;
+            }
             resp.json().then(
               (config) => {
+                if (config.id.includes('example_json')) {
+                  log(
+                    'log',
+                    'You seem to be using example configuration.\nMake sure you have valid config in /config/www/sidebar-order.json file.'
+                  );
+                }
                 process((window.$customSidebarV2_orderConfig = config));
               },
               (err) => {
@@ -412,6 +429,6 @@
   if (!window.$customSidebarV2_Loaded) {
     runInterval = setInterval(run, 1000);
   } else {
-    finish('Custom Sidebar already loaded');
+    finish('Already loaded');
   }
 })();
