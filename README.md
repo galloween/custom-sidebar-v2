@@ -84,7 +84,8 @@ Short example:
 - all other items will be ordered according to their (optional) "order" property **OR** in the order of appearance in config.order
 - if using "order" property, make sure either all items (except hidden) have this property, or none of them (otherwise order may be messed up).
 - any items present in Sidebar, but not in config.order, will be shown on the **bottom** of the top part of the list
-- when using Exceptions, pay attention to "base_order" property - if it's set to "false", the main config.order will be ignored, leaving you with default sidebar (which now should be modified with the exception's order)
+- when using **Exceptions**, pay attention to "base_order" property - if it's set to "false", the main config.order will be ignored, leaving you with default sidebar (which now should be modified with the exception's order)
+- if you seem to be **stuck with old config**, try clearing site data - [instruction here](https://github.com/Villhellm/custom-sidebar/issues/40#issuecomment-982944888)
 
 ## Exceptions
 You can define user-specific order using `exceptions` feature (see [details in original repo](https://github.com/Villhellm/custom-sidebar#exceptions))
