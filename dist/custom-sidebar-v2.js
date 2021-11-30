@@ -1,31 +1,12 @@
-// updated 15-11-21 15:51
-// -----------------------
-// Custom Sidebar for Home Assistant
-//
-// quick refactor of
-// https://github.com/Villhellm/custom-sidebar
-//
-// INSTALL:
-// manually put this code as custom-sidebar.js in <config directory>/www/
-// add in confgiguration.yaml:
-//      frontend:
-//        extra_module_url:
-//          - /local/custom-sidebar.js
-//
-// CONFIG:
-// config is now in JSON format (not yaml) and can be included right here
-//  (see window.$customSidebarV2_orderConfig below).
-// alternatively, you can put the config object ({...}) in sidebar-order.json
-// in <config directory>/www/
-
-// NOTES:
-// - all items in config.order should have unique "item" property.
-// - items with "hide: true" are not considered in new order,
-//   all other items will be ordered as listed in config.order
-// - any items present in Sidebar, but not in config.order, will be shown on top of the list
-//
-// by @galloween
-//
+/**
+ * updated 30-11-21 12:50
+ * ----------------------------------
+ * Custom Sidebar for Home Assistant
+ * ----------------------------------
+ * README: https://github.com/galloween/custom-sidebar-v2/blob/main/README.md
+ * ----------------------------------
+ * by https://github.com/galloween
+ */
 
 (() => {
   //------------------
@@ -157,7 +138,9 @@
       }
     } catch (e) {
       console.warn('Custom sidebar: Error rearranging order', e);
+      return false;
     }
+    return true;
   }
 
   function updateIcon(element, icon) {
@@ -195,39 +178,6 @@
     }
   }
 
-  function createItem(elements, config_entry, index) {
-    try {
-      const cln =
-        config_entry.itemElement || getSidebarItem(elements).cloneNode(true);
-      if (cln) {
-        //
-        updateIcon(cln, config_entry.icon);
-        updateName(cln, config_entry.item);
-
-        cln.href = config_entry.href;
-        cln.target = config_entry.target || '';
-
-        cln.setAttribute(
-          'data-panel',
-          config_entry.item.toLowerCase().replace(/\s/, '_')
-        );
-        cln.setAttribute('data-custom-sidebar-processed', 'create');
-        cln.setAttribute('aria-selected', 'false');
-        cln.className = '';
-        cln.style.order = config_entry.bottom
-          ? index + 1 + spacerOrder
-          : index + 1;
-
-        elements.insertBefore(cln, elements.children[0]);
-
-        config_entry.created = true;
-        config_entry.itemElement = cln;
-      }
-    } catch (e) {
-      console.warn('Custom sidebar: Error creating item', e);
-    }
-  }
-
   function findItem(elements, config_entry) {
     try {
       const item = Array.from(elements.children).find((element) => {
@@ -247,6 +197,49 @@
       return item;
     } catch (e) {
       console.warn('Custom sidebar: Error finding item', e);
+      return null;
+    }
+  }
+
+  function setOrder(element, config_entry, index) {
+    config_entry.order &&
+      (config_entry.order = parseInt(config_entry.order) || null);
+
+    element &&
+      (element.style.order = config_entry.bottom
+        ? (config_entry.order || index + 1) + spacerOrder
+        : config_entry.order || index + 1);
+  }
+
+  function createItem(elements, config_entry, index) {
+    try {
+      const cln =
+        config_entry.itemElement || getSidebarItem(elements).cloneNode(true);
+      if (cln) {
+        //
+        updateIcon(cln, config_entry.icon);
+        updateName(cln, config_entry.item);
+
+        cln.href = config_entry.href;
+        cln.target = config_entry.target || '';
+
+        cln.setAttribute(
+          'data-panel',
+          config_entry.item.toLowerCase().replace(/\s/, '_')
+        );
+        cln.setAttribute('data-custom-sidebar-processed', 'create');
+        cln.setAttribute('aria-selected', 'false');
+        cln.className = '';
+
+        setOrder(cln, config_entry, index);
+
+        elements.insertBefore(cln, elements.children[0]);
+
+        config_entry.created = true;
+        config_entry.itemElement = cln;
+      }
+    } catch (e) {
+      console.warn('Custom sidebar: Error creating item', e);
     }
   }
 
@@ -276,12 +269,12 @@
           elementToMove.setAttribute('data-custom-sidebar-processed', 'hide');
           //
         } else {
+          //
           elementToMove.style.display = 'block';
-          elementToMove.style.order = config_entry.bottom
-            ? index + 1 + spacerOrder
-            : index + 1;
+          setOrder(elementToMove, config_entry, index);
           elementToMove.setAttribute('data-custom-sidebar-processed', 'move');
         }
+
         elementToMove.setAttribute('aria-selected', 'false');
         elementToMove.className = '';
 
@@ -323,7 +316,7 @@
                 )))
           );
         });
-        if (exceptions.some((e) => e.base_order !== true)) {
+        if (exceptions.some((e) => e.base_order === false)) {
           order = [];
         }
         exceptions.forEach((e) => order.push(...e.order));
@@ -343,14 +336,23 @@
       setTitle(config.title);
     }
     const order = getOrderWithExceptions(config.order, config.exceptions);
-    rearrange(order);
-    finish(true);
+    finish(rearrange(order));
   }
 
   function finish(success, error) {
     clearInterval(runInterval);
-    !success && console.warn('Custom Sidebar failed.', error);
-    success && console.log('Custom Sidebar loaded successfully.');
+    window.$customSidebarV2_Loaded = success ? 'success' : 'error';
+    !success &&
+      console.warn(
+        '%cCustom Sidebar failed.',
+        'background:#8b0000; color:white; padding:2px; border-radius:2px',
+        error || ''
+      );
+    success &&
+      console.log(
+        '%cCustom Sidebar loaded successfully.',
+        'background:#222; color:#bada55; padding:2px; border-radius:2px;'
+      );
   }
 
   function run() {

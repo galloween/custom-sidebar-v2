@@ -5,78 +5,95 @@
       "item": "Google",
       "href": "https://mrdoob.com/projects/chromeexperiments/google-gravity/",
       "icon": "mdi:earth",
-      "target": "_blank"
+      "target": "_blank",
+      "order": 1
     },
     {
-      "item": "overview"
+      "item": "overview",
+      "order": 2
     },
     {
-      "item": "supervisor"
+      "item": "supervisor",
+      "order": 3
     },
     {
       "new_item": true,
       "item": "Integrations",
       "href": "/config/integrations",
-      "icon": "mdi:puzzle"
+      "icon": "mdi:puzzle",
+      "order": 4
     },
     {
       "new_item": true,
       "item": "Entities",
       "href": "/config/entities",
-      "icon": "mdi:hexagon-multiple"
+      "icon": "mdi:hexagon-multiple",
+      "order": 5
     },
     {
       "new_item": true,
       "item": "Automations",
       "href": "/config/automation/dashboard",
-      "icon": "mdi:robot"
+      "icon": "mdi:robot",
+      "order": 6
     },
     {
-      "item": "file editor"
+      "item": "file editor",
+      "order": 7
     },
     {
-      "item": "terminal"
+      "item": "terminal",
+      "order": 8
     },
     {
-      "item": "hacs"
+      "item": "hacs",
+      "order": 9
     },
     {
       "item": "configuration",
-      "bottom": true
+      "bottom": true,
+      "order": 10
     },
     {
       "new_item": true,
       "item": "Server Controls",
       "href": "/config/server_control",
       "icon": "mdi:server",
-      "bottom": true
+      "bottom": true,
+      "order": 11
     },
     {
       "item": "history",
-      "bottom": true
+      "bottom": true,
+      "order": 12
     },
     {
       "item": "logbook",
-      "bottom": true
+      "bottom": true,
+      "order": 13
     },
     {
       "new_item": true,
       "item": "Logs",
       "bottom": true,
       "href": "/config/logs",
-      "icon": "mdi:math-log"
+      "icon": "mdi:math-log",
+      "order": 14
     },
     {
       "item": "developer tools",
-      "bottom": true
+      "bottom": true,
+      "order": 15
     },
     {
       "item": "snapshots",
-      "bottom": true
+      "bottom": true,
+      "order": 16
     },
     {
       "item": "backups",
-      "bottom": true
+      "bottom": true,
+      "order": 17
     },
     {
       "item": "map",
