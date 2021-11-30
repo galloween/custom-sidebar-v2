@@ -395,7 +395,7 @@
             }
             resp.json().then(
               (config) => {
-                if (config.id.includes('example_json')) {
+                if (config.id && config.id.includes('example_json')) {
                   log(
                     'log',
                     'You seem to be using example configuration.\nMake sure you have valid config in /config/www/sidebar-order.json file.'
