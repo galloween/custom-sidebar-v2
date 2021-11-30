@@ -342,6 +342,10 @@
     finish(rearrange(order));
   }
 
+  function asArray(valOrArr) {
+    return !valOrArr || Array.isArray(valOrArr) ? valOrArr : [valOrArr];
+  }
+
   function finish(success, error) {
     clearInterval(runInterval);
     window.$customSidebarV2_Loaded = success ? 'success' : 'error';
@@ -349,7 +353,7 @@
       console.warn(
         '%cCustom Sidebar failed (version: ' + ver + ')',
         'background:#8b0000; color:white; padding:2px; border-radius:2px',
-        error || ''
+        ...(asArray(error) || [''])
       );
     success &&
       console.log(
@@ -382,12 +386,12 @@
                 process((window.$customSidebarV2_orderConfig = config));
               },
               (err) => {
-                finish(false, err);
+                finish(false, ['Error loading JSON config (1)', err]);
               }
             );
           },
           (err) => {
-            finish(false, err);
+            finish(false, ['Error loading JSON config (2)', err]);
           }
         );
       }
