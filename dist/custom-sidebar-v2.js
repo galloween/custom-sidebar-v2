@@ -400,7 +400,7 @@
     }
   }
 
-  if (window.$customSidebarV2_Loaded) {
+  if (!window.$customSidebarV2_Loaded) {
     runInterval = setInterval(run, 1000);
   }
 })();
