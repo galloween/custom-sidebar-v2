@@ -1,5 +1,5 @@
 /**
- * updated 30-11-21 12:50
+ * updated 30-11-21 13:18
  * ----------------------------------
  * Custom Sidebar for Home Assistant
  * ----------------------------------
@@ -18,6 +18,8 @@
 
   !window.$customSidebarV2_tryCounter &&
     (window.$customSidebarV2_tryCounter = 0);
+
+  const ver = '30-11-21 13:18';
 
   let SideBarElement,
     DrawerLayoutElement,
@@ -345,13 +347,15 @@
     window.$customSidebarV2_Loaded = success ? 'success' : 'error';
     !success &&
       console.warn(
-        '%cCustom Sidebar failed.',
+        '%cCustom Sidebar failed (version:' + ver + ')',
         'background:#8b0000; color:white; padding:2px; border-radius:2px',
         error || ''
       );
     success &&
       console.log(
-        '%cCustom Sidebar loaded successfully.',
+        success === true
+          ? '%cCustom Sidebar loaded successfully (version:' + ver + ')'
+          : '%c' + success + ' (version:' + ver + ')',
         'background:#222; color:#bada55; padding:2px; border-radius:2px;'
       );
   }
@@ -389,7 +393,7 @@
       }
     } else {
       if (window.$customSidebarV2_Loaded) {
-        finish(true);
+        finish('Custom Sidebar already loaded');
       }
       if (
         ++window.$customSidebarV2_tryCounter > 10 &&
@@ -402,5 +406,7 @@
 
   if (!window.$customSidebarV2_Loaded) {
     runInterval = setInterval(run, 1000);
+  } else {
+    finish('Custom Sidebar already loaded');
   }
 })();
