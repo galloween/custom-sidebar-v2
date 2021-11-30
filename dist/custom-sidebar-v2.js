@@ -370,59 +370,63 @@
   }
 
   function run() {
-    DrawerLayoutElement = getDrawerLayout();
-    SideBarElement = getSidebar();
-    SidebarItemElement = SideBarElement && getSidebarItem(SideBarElement);
+    try {
+      DrawerLayoutElement = getDrawerLayout();
+      SideBarElement = getSidebar();
+      SidebarItemElement = SideBarElement && getSidebarItem(SideBarElement);
 
-    if (
-      SideBarElement &&
-      SidebarItemElement &&
-      !window.$customSidebarV2_Loaded
-    ) {
-      window.$customSidebarV2_Loaded = true;
-
-      if (window.$customSidebarV2_orderConfig) {
-        process(window.$customSidebarV2_orderConfig);
-      } else {
-        fetch('/local/sidebar-order.json').then(
-          (resp) => {
-            if (!resp.ok || resp.status == 404) {
-              finish(
-                false,
-                'JSON config file not found.\nMake sure you have valid config in /config/www/sidebar-order.json file.'
-              );
-              return;
-            }
-            resp.json().then(
-              (config) => {
-                if (config.id && config.id.includes('example_json')) {
-                  log(
-                    'log',
-                    'You seem to be using example configuration.\nMake sure you have valid config in /config/www/sidebar-order.json file.'
-                  );
-                }
-                process((window.$customSidebarV2_orderConfig = config));
-              },
-              (err) => {
-                finish(false, ['Error loading JSON config', err]);
-              }
-            );
-          },
-          (err) => {
-            finish(false, ['Error loading JSON config', err]);
-          }
-        );
-      }
-    } else {
-      if (window.$customSidebarV2_Loaded) {
-        finish('Custom Sidebar already loaded');
-      }
       if (
-        ++window.$customSidebarV2_tryCounter > 10 &&
+        SideBarElement &&
+        SidebarItemElement &&
         !window.$customSidebarV2_Loaded
       ) {
-        finish(false, 'Tried 10 times and gave up');
+        window.$customSidebarV2_Loaded = true;
+
+        if (window.$customSidebarV2_orderConfig) {
+          process(window.$customSidebarV2_orderConfig);
+        } else {
+          fetch('/local/sidebar-order.json').then(
+            (resp) => {
+              if (!resp.ok || resp.status == 404) {
+                finish(
+                  false,
+                  'JSON config file not found.\nMake sure you have valid config in /config/www/sidebar-order.json file.'
+                );
+                return;
+              }
+              resp.json().then(
+                (config) => {
+                  if (config.id && config.id.includes('example_json')) {
+                    log(
+                      'log',
+                      'You seem to be using example configuration.\nMake sure you have valid config in /config/www/sidebar-order.json file.'
+                    );
+                  }
+                  process((window.$customSidebarV2_orderConfig = config));
+                },
+                (err) => {
+                  finish(false, ['Error loading JSON config', err]);
+                }
+              );
+            },
+            (err) => {
+              finish(false, ['Error loading JSON config', err]);
+            }
+          );
+        }
+      } else {
+        if (window.$customSidebarV2_Loaded) {
+          finish('Custom Sidebar already loaded');
+        }
+        if (
+          ++window.$customSidebarV2_tryCounter > 10 &&
+          !window.$customSidebarV2_Loaded
+        ) {
+          finish(false, 'Tried 10 times and gave up');
+        }
       }
+    } catch (e) {
+      finish(false, e);
     }
   }
 
