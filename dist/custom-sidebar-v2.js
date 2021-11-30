@@ -387,10 +387,16 @@
           }
         );
       }
-    } else if (++window.$customSidebarV2_tryCounter > 10) {
-      !window.$customSidebarV2_Loaded &&
+    } else {
+      if (window.$customSidebarV2_Loaded) {
+        finish(true);
+      }
+      if (
+        ++window.$customSidebarV2_tryCounter > 10 &&
+        !window.$customSidebarV2_Loaded
+      ) {
         finish(false, 'Tried 10 times and gave up');
-      clearInterval(runInterval);
+      }
     }
   }
 
