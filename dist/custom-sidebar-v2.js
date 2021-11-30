@@ -1,5 +1,5 @@
 /**
- * updated 30-11-21 20:56
+ * updated 30-11-21 21:02
  * ----------------------------------
  * Custom Sidebar for Home Assistant
  * ----------------------------------
@@ -19,7 +19,7 @@
   !window.$customSidebarV2_tryCounter &&
     (window.$customSidebarV2_tryCounter = 0);
 
-  const ver = '30-11-21 13:18';
+  const ver = '301121_2102';
 
   let SideBarElement,
     DrawerLayoutElement,
@@ -55,7 +55,7 @@
       how = 'log';
     }
     console[how](
-      '%cCustom sidebar: ' + what + ' (version: ' + ver + ')',
+      '%cCustom sidebar (ver.' + ver + '): ' + what,
       style[how],
       ...(asArray(stuff) || [''])
     );
