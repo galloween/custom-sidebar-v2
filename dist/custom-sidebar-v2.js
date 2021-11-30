@@ -23,7 +23,8 @@
     DrawerLayoutElement,
     TitleElement,
     SidebarItemElement,
-    Haobj;
+    Haobj,
+    runInterval;
 
   const spacerOrder = 100,
     notProcessedOrder = 50;
@@ -387,9 +388,13 @@
         );
       }
     } else if (++window.$customSidebarV2_tryCounter > 10) {
-      finish(false, 'Tried 10 times and gave up');
+      !window.$customSidebarV2_Loaded &&
+        finish(false, 'Tried 10 times and gave up');
+      clearInterval(runInterval);
     }
   }
 
-  const runInterval = setInterval(run, 1000);
+  if (window.$customSidebarV2_Loaded) {
+    runInterval = setInterval(run, 1000);
+  }
 })();
