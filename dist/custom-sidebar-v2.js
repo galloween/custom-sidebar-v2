@@ -347,15 +347,15 @@
     window.$customSidebarV2_Loaded = success ? 'success' : 'error';
     !success &&
       console.warn(
-        '%cCustom Sidebar failed (version:' + ver + ')',
+        '%cCustom Sidebar failed (version: ' + ver + ')',
         'background:#8b0000; color:white; padding:2px; border-radius:2px',
         error || ''
       );
     success &&
       console.log(
         success === true
-          ? '%cCustom Sidebar loaded successfully (version:' + ver + ')'
-          : '%c' + success + ' (version:' + ver + ')',
+          ? '%cCustom Sidebar loaded successfully (version: ' + ver + ')'
+          : '%c' + success + ' (version: ' + ver + ')',
         'background:#222; color:#bada55; padding:2px; border-radius:2px;'
       );
   }

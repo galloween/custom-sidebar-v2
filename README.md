@@ -1,9 +1,9 @@
-**Note**: some useful insights for troubleshooting in [this thread](https://github.com/Villhellm/custom-sidebar/issues/40#issuecomment-968252152).
+**Note**: some useful insights for troubleshooting in [this thread](https://github.com/Villhellm/custom-sidebar/issues/40#issuecomment-968252152). Also see [these notes](https://github.com/galloween/custom-sidebar-v2#notes).
 
 # Home Assistant Custom Sidebar v2
 Custom [HACS](https://hacs.xyz) `Lovelace Plugin` that allows you to rearrange, hide, and add [Home Assistant](https://www.home-assistant.io) sidebar menu items.
 
-This is a refactor of the original [Custom Sidebar plugin](https://github.com/Villhellm/custom-sidebar) by [@Villhellm](https://github.com/Villhellm)  <br>
+This is a refactor of the original [Custom Sidebar plugin](https://github.com/Villhellm/custom-sidebar) by [@Villhellm](https://github.com/Villhellm) <br>
 to make it work with recent versions of `Home Assistant`.
 
 [Villhellm](https://github.com/Villhellm)'s code was refactored with simplicity and performance in mind. <br>
@@ -55,19 +55,23 @@ Short example:
       "item": "Google",
       "href": "https://mrdoob.com/projects/chromeexperiments/google-gravity/",
       "icon": "mdi:earth",
-      "target": "_blank"
+      "target": "_blank",
+      "order": 4
     },
     {
-      "item": "overview"
+      "item": "overview",
+      "order": 2
     },
     {
-      "item": "supervisor"
+      "item": "supervisor",
+      "order": 1
     },
     {
       "new_item": true,
       "item": "Integrations",
       "href": "/config/integrations",
-      "icon": "mdi:puzzle"
+      "icon": "mdi:puzzle",
+      "order: 3
     }
   ]
  }
@@ -77,8 +81,10 @@ Short example:
 - all items in config.order should have unique "item" property
 - check out [this post](https://github.com/Villhellm/custom-sidebar/issues/40#issuecomment-982064937) on how to find the name of the menu item
 - items with "hide: true" are not considered in new order,
-  all other items will be ordered as listed in config.order
+- all other items will be ordered according to their (optional) "order" property **OR** in the order of appearance in config.order
+- if using "order" property, make sure either all items (except hidden) have this property, or none of them (otherwise order may be messed up).
 - any items present in Sidebar, but not in config.order, will be shown on the **bottom** of the top part of the list
+- when using Exceptions, pay attention to "base_order" property - if it's set to "false", the main config.order will be ignored, leaving you with default sidebar (which now should be modified with the exception's order)
 
 ## Exceptions
 You can define user-specific order using `exceptions` feature (see [details in original repo](https://github.com/Villhellm/custom-sidebar#exceptions))
