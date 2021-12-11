@@ -102,7 +102,21 @@ You can define user-specific order using `exceptions` feature (see [details in o
 }
 ```
 
-## Combining with Iframe Panel to show external content inside Home Assitant
+## Home Assistant built-in sidebar configuration options
+Check out Home Assistant's "native" sidebar tools - quite possibly, it will be enough for your needs.
+- You can use HA's `panel_custom` integration to add internal links to the sidebar. Take a look at [this tutorial](https://home-assistant-guide.com/2021/12/08/how-to-add-internal-links-to-the-home-assistant-sidebar/). Official [docs](https://www.home-assistant.io/integrations/panel_custom/).
+- You can use HA's `panel_iframe` integratoin to add external links. [See below](https://github.com/galloween/custom-sidebar-v2#combining-with-iframe-panel-to-show-external-content-inside-home-assitant). Official [docs](https://www.home-assistant.io/integrations/panel_iframe/).
+- You can click and hold the Home Assistant header on top of the sidebar and then it will allow you to add/remove and re-order some of the items (but not add new custom ones):
+<table><tr><td>
+<img src="https://user-images.githubusercontent.com/2077754/144053778-af097557-2bf6-4c74-b934-da7a78160458.png">
+</td><td>
+<img src="https://user-images.githubusercontent.com/2077754/144053817-627d00c5-44c5-4ede-9578-c4a9a2ba0ac4.png">
+</td></tr></table>
+This feature is also accessible from your profile settings (if you click on your name in the bottom left corner):
+<img src="https://user-images.githubusercontent.com/2077754/144054143-bd025124-211b-4f64-be09-e2e99d4f6ee2.png">
+
+
+## Combine with Iframe Panel to show external content inside Home Assitant
 If you use [Home Assistant's Iframe Panel feature](https://www.home-assistant.io/integrations/panel_iframe/) and have some iframe_panel links configured in `configuration.yaml`
 ```
 panel_iframe:
