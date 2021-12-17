@@ -395,7 +395,7 @@
       setTitle(config.title);
     }
     if (Array.isArray(config.exceptions) && config.exceptions.length) {
-      window.$customSidebarV2.orderWithoutExceptions = cloneObj(config.order);
+      window.$customSidebarV2.orderConfig.base_order = cloneObj(config.order);
       config.order = getOrderWithExceptions(config.order, config.exceptions);
     }
     finish(rearrange(config.order));
@@ -441,7 +441,6 @@
                       'You seem to be using example configuration.\nMake sure you have valid config in /config/www/sidebar-order.json file.'
                     );
                   }
-                  window.$customSidebarV2.configFileContentx = cloneObj(config);
                   process((window.$customSidebarV2.orderConfig = config));
                 },
                 (err) => {
