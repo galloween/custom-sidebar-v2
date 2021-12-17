@@ -64,7 +64,8 @@
     console[how](
       '%cCustom sidebar (ver.' + ver + '): ' + what,
       style[how],
-      ...(asArray(stuff) || [''])
+      ...(asArray(stuff) || ['']),
+      $customSidebarV2
     );
   }
 
