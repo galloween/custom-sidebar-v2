@@ -12,12 +12,12 @@
   //------------------
   // CONFIG
 
-  // window.$customSidebarV2_orderConfig = { order: [...] };
+  // window.$customSidebarV2.orderConfig = { order: [...] };
 
   //------------------
 
-  !window.$customSidebarV2_tryCounter &&
-    (window.$customSidebarV2_tryCounter = 0);
+  !window.$customSidebarV2 &&
+    (window.$customSidebarV2 = { tryCounter: 0, Loaded: false });
 
   const ver = '301121_2102';
 
@@ -33,6 +33,13 @@
 
   function asArray(valOrArr) {
     return !valOrArr || Array.isArray(valOrArr) ? valOrArr : [valOrArr];
+  }
+
+  function cloneObj(obj) {
+    try {
+      return JSON.parse(JSON.stringify(obj));
+    } catch (e) {}
+    return obj;
   }
 
   function getListAsArray(list) {
@@ -62,24 +69,36 @@
   }
 
   function getHaobj() {
-    return Haobj || (Haobj = document.querySelector('home-assistant')?.hass);
+    return (
+      Haobj ||
+      (() => {
+        const haElement = document.querySelector('home-assistant');
+        return (Haobj = haElement && haElement.hass);
+      })()
+    );
   }
 
   function getCurrentUser() {
     const haObj = getHaobj();
     return (
-      (haObj &&
-        haObj.user &&
-        haObj.user.name &&
-        haObj.user.name.toLowerCase()) ||
-      ''
+      window.$customSidebarV2.currentUser ||
+      (window.$customSidebarV2.currentUser =
+        (haObj &&
+          haObj.user &&
+          haObj.user.name &&
+          haObj.user.name.toLowerCase()) ||
+        '')
     );
   }
 
   function getCurrentDevice() {
-    return navigator && navigator.userAgent
-      ? navigator.userAgent.toLowerCase()
-      : '';
+    return (
+      window.$customSidebarV2.currentDevice ||
+      (window.$customSidebarV2.currentDevice =
+        navigator && navigator.userAgent
+          ? navigator.userAgent.toLowerCase()
+          : '')
+    );
   }
 
   function getDrawerLayout() {
@@ -217,7 +236,7 @@
         if (element.tagName !== 'A') {
           return false;
         }
-        const currentName = findNameElement(element).innerText?.trim();
+        const currentName = findNameElement(element).innerText.trim();
         const currentPanel = element.getAttribute('data-panel');
 
         return config_entry.exact
@@ -260,11 +279,21 @@
           'data-panel',
           config_entry.item.toLowerCase().replace(/\s/, '_')
         );
-        cln.setAttribute('data-custom-sidebar-processed', 'create');
+
+        if (config_entry.hide == true) {
+          cln.style.display = 'none';
+          cln.setAttribute('data-custom-sidebar-processed', 'hide');
+          config_entry.hidden = true;
+          //
+        } else {
+          //
+          cln.style.display = 'block';
+          cln.setAttribute('data-custom-sidebar-processed', 'create');
+          setOrder(cln, config_entry, index);
+        }
+
         cln.setAttribute('aria-selected', 'false');
         cln.className = '';
-
-        setOrder(cln, config_entry, index);
 
         elements.insertBefore(cln, elements.children[0]);
 
@@ -300,6 +329,7 @@
         if (config_entry.hide == true) {
           elementToMove.style.display = 'none';
           elementToMove.setAttribute('data-custom-sidebar-processed', 'hide');
+          config_entry.hidden = true;
           //
         } else {
           //
@@ -340,7 +370,7 @@
           );
         });
         if (exceptions.some((e) => e.base_order === false)) {
-          order = [];
+          order.length = 0;
         }
         exceptions.forEach((e) => order.push(...e.order));
       }
@@ -358,13 +388,16 @@
     if (config.title) {
       setTitle(config.title);
     }
-    const order = getOrderWithExceptions(config.order, config.exceptions);
-    finish(rearrange(order));
+    if (Array.isArray(config.exceptions) && config.exceptions.length) {
+      window.$customSidebarV2.orderWithoutExceptions = cloneObj(config.order);
+      config.order = getOrderWithExceptions(config.order, config.exceptions);
+    }
+    finish(rearrange(config.order));
   }
 
   function finish(success, error) {
     clearInterval(runInterval);
-    window.$customSidebarV2_Loaded = success ? 'success' : 'error';
+    window.$customSidebarV2.Loaded = success ? 'success' : 'error';
     !success && log('warn', 'Failed', error);
     success && log('log', 'Loaded successfully!');
   }
@@ -378,12 +411,12 @@
       if (
         SideBarElement &&
         SidebarItemElement &&
-        !window.$customSidebarV2_Loaded
+        !window.$customSidebarV2.Loaded
       ) {
-        window.$customSidebarV2_Loaded = true;
+        window.$customSidebarV2.Loaded = true;
 
-        if (window.$customSidebarV2_orderConfig) {
-          process(window.$customSidebarV2_orderConfig);
+        if (window.$customSidebarV2.orderConfig) {
+          process(window.$customSidebarV2.orderConfig);
         } else {
           fetch('/local/sidebar-order.json').then(
             (resp) => {
@@ -402,7 +435,7 @@
                       'You seem to be using example configuration.\nMake sure you have valid config in /config/www/sidebar-order.json file.'
                     );
                   }
-                  process((window.$customSidebarV2_orderConfig = config));
+                  process((window.$customSidebarV2.orderConfig = config));
                 },
                 (err) => {
                   finish(false, ['Error loading JSON config', err]);
@@ -415,12 +448,12 @@
           );
         }
       } else {
-        if (window.$customSidebarV2_Loaded) {
+        if (window.$customSidebarV2.Loaded) {
           finish('Custom Sidebar already loaded');
         }
         if (
-          ++window.$customSidebarV2_tryCounter > 10 &&
-          !window.$customSidebarV2_Loaded
+          ++window.$customSidebarV2.tryCounter > 10 &&
+          !window.$customSidebarV2.Loaded
         ) {
           finish(false, 'Tried 10 times and gave up');
         }
@@ -430,7 +463,7 @@
     }
   }
 
-  if (!window.$customSidebarV2_Loaded) {
+  if (!window.$customSidebarV2.Loaded) {
     runInterval = setInterval(run, 1000);
   } else {
     finish('Already loaded');
