@@ -271,7 +271,7 @@
       if (cln) {
         //
         updateIcon(cln, config_entry.icon);
-        updateName(cln, config_entry.item);
+        updateName(cln, config_entry.name||config_entry.item);
 
         cln.href = config_entry.href;
         cln.target = config_entry.target || '';
