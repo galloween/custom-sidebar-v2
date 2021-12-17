@@ -271,7 +271,7 @@
       if (cln) {
         //
         updateIcon(cln, config_entry.icon);
-        updateName(cln, config_entry.name||config_entry.item);
+        updateName(cln, config_entry.name || config_entry.item);
 
         cln.href = config_entry.href;
         cln.target = config_entry.target || '';
@@ -424,7 +424,11 @@
         if (window.$customSidebarV2.orderConfig) {
           process(window.$customSidebarV2.orderConfig);
         } else {
-          fetch('/local/sidebar-order.json').then(
+          fetch(
+            '/local/sidebar-order.json' +
+              '?' +
+              Math.random().toString(16).substr(2, 5)
+          ).then(
             (resp) => {
               if (!resp.ok || resp.status == 404) {
                 finish(
