@@ -435,6 +435,7 @@
                       'You seem to be using example configuration.\nMake sure you have valid config in /config/www/sidebar-order.json file.'
                     );
                   }
+                  window.$customSidebarV2.configFileContentx = cloneObj(config);
                   process((window.$customSidebarV2.orderConfig = config));
                 },
                 (err) => {
