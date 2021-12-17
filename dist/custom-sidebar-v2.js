@@ -1,5 +1,5 @@
 /**
- * updated 30-11-21 21:02
+ * updated 30-12-17 23:59
  * ----------------------------------
  * Custom Sidebar for Home Assistant
  * ----------------------------------
@@ -19,7 +19,7 @@
   !window.$customSidebarV2 &&
     (window.$customSidebarV2 = { tryCounter: 0, Loaded: false });
 
-  const ver = '301121_2102';
+  const ver = '301217_2359';
 
   let SideBarElement,
     DrawerLayoutElement,
