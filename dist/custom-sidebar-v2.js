@@ -21,12 +21,7 @@
 
   const ver = '301217_2359';
 
-  let SideBarElement,
-    DrawerLayoutElement,
-    TitleElement,
-    SidebarItemElement,
-    Haobj,
-    runInterval;
+  let runInterval;
 
   const spacerOrder = 100,
     notProcessedOrder = 50;
@@ -71,10 +66,10 @@
 
   function getHaobj() {
     return (
-      Haobj ||
+      window.$customSidebarV2.Haobj ||
       (() => {
         const haElement = document.querySelector('home-assistant');
-        return (Haobj = haElement && haElement.hass);
+        return (window.$customSidebarV2.Haobj = haElement && haElement.hass);
       })()
     );
   }
@@ -103,33 +98,44 @@
   }
 
   function getDrawerLayout() {
-    if (DrawerLayoutElement) {
-      return DrawerLayoutElement;
+    if (window.$customSidebarV2.DrawerLayoutElement) {
+      return window.$customSidebarV2.DrawerLayoutElement;
     }
     let root = document.querySelector('home-assistant');
     root = root && root.shadowRoot;
     root = root && root.querySelector('home-assistant-main');
     root = root && root.shadowRoot;
     const drawerLayout = root && root.querySelector('app-drawer-layout');
-    return (DrawerLayoutElement = drawerLayout);
+    !drawerLayout &&
+      log(
+        'warn',
+        'Cannot find "home-assistant home-assistant-main app-drawer-layout" element'
+      );
+
+    return (window.$customSidebarV2.DrawerLayoutElement = drawerLayout);
   }
 
   function getSidebar() {
-    if (SideBarElement) {
-      return SideBarElement;
+    if (window.$customSidebarV2.SideBarElement) {
+      return window.$customSidebarV2.SideBarElement;
     }
     const drawerLayout = getDrawerLayout();
     let sidebar =
       drawerLayout && drawerLayout.querySelector('app-drawer ha-sidebar');
     sidebar = sidebar && sidebar.shadowRoot;
-    TitleElement = sidebar && sidebar.querySelector('.title');
+    window.$customSidebarV2.TitleElement =
+      sidebar && sidebar.querySelector('.title');
     sidebar = sidebar && sidebar.querySelector('paper-listbox');
-    return (SideBarElement = sidebar);
+
+    !sidebar &&
+      log('warn', 'Cannot find "app-drawer ha-sidebar paper-listbox" element');
+
+    return (window.$customSidebarV2.SideBarElement = sidebar);
   }
 
   function getSidebarItem(root) {
-    if (SidebarItemElement) {
-      return SidebarItemElement;
+    if (window.$customSidebarV2.SidebarItemElement) {
+      return window.$customSidebarV2.SidebarItemElement;
     }
     if (!root || !root.children) {
       return;
@@ -142,24 +148,24 @@
   }
 
   function setTitle(title) {
-    if (TitleElement) {
-      TitleElement.innerHTML = title;
+    if (window.$customSidebarV2.TitleElement) {
+      window.$customSidebarV2.TitleElement.innerHTML = title;
     }
   }
 
   function rearrange(order) {
     try {
-      if (order && SideBarElement) {
-        SideBarElement.style.display = 'flex';
-        SideBarElement.style.flexDirection = 'column';
+      if (order && window.$customSidebarV2.SideBarElement) {
+        window.$customSidebarV2.SideBarElement.style.display = 'flex';
+        window.$customSidebarV2.SideBarElement.style.flexDirection = 'column';
 
-        const spacerElement = Array.from(SideBarElement.children).find(
-          (element) => {
-            return (
-              element.tagName == 'DIV' && element.classList.contains('spacer')
-            );
-          }
-        );
+        const spacerElement = Array.from(
+          window.$customSidebarV2.SideBarElement.children
+        ).find((element) => {
+          return (
+            element.tagName == 'DIV' && element.classList.contains('spacer')
+          );
+        });
         spacerElement.style.order = spacerOrder;
         spacerElement.style.flexGrow = 5;
 
@@ -168,20 +174,24 @@
           const shouldMove = !item.new_item && !item.moved;
 
           if (shouldCreate || shouldMove) {
-            const existingItem = findItem(SideBarElement, item);
+            const existingItem = findItem(
+              window.$customSidebarV2.SideBarElement,
+              item
+            );
             if (existingItem) {
               item.itemElement = existingItem;
               shouldCreate && (item.created = true);
-              moveItem(SideBarElement, item, i);
+              moveItem(window.$customSidebarV2.SideBarElement, item, i);
             } else {
               shouldMove && (item.moved = true);
-              item.href && createItem(SideBarElement, item, i);
+              item.href &&
+                createItem(window.$customSidebarV2.SideBarElement, item, i);
             }
           }
         });
 
         Array.from(
-          SideBarElement.querySelectorAll(
+          window.$customSidebarV2.SideBarElement.querySelectorAll(
             'a[aria-role="option"]:not([data-custom-sidebar-processed]'
           )
         ).forEach((element, index) => {
@@ -414,13 +424,15 @@
 
   function run() {
     try {
-      DrawerLayoutElement = getDrawerLayout();
-      SideBarElement = getSidebar();
-      SidebarItemElement = SideBarElement && getSidebarItem(SideBarElement);
+      window.$customSidebarV2.DrawerLayoutElement = getDrawerLayout();
+      window.$customSidebarV2.SideBarElement = getSidebar();
+      window.$customSidebarV2.SidebarItemElement =
+        window.$customSidebarV2.SideBarElement &&
+        getSidebarItem(window.$customSidebarV2.SideBarElement);
 
       if (
-        SideBarElement &&
-        SidebarItemElement &&
+        window.$customSidebarV2.SideBarElement &&
+        window.$customSidebarV2.SidebarItemElement &&
         !window.$customSidebarV2.Loaded
       ) {
         window.$customSidebarV2.Loaded = true;
