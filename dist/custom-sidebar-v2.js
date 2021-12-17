@@ -357,13 +357,18 @@
       if (Array.isArray(exceptions)) {
         const currentUser = getCurrentUser(),
           currentDevice = getCurrentDevice();
+
         exceptions = exceptions.filter((exc) => {
+          exc.user = getListAsArray(exc.user).map((u) => u.toLowerCase());
+          exc.not_user = getListAsArray(exc.not_user).map((u) =>
+            u.toLowerCase()
+          );
+
           return (
             exc &&
             Array.isArray(exc.order) &&
-            ((exc.user && getListAsArray(exc.user).includes(currentUser)) ||
-              (exc.not_user &&
-                !getListAsArray(exc.not_user).includes(currentUser)) ||
+            (exc.user.includes(currentUser) ||
+              exc.not_user.includes(currentUser) ||
               (exc.device &&
                 getListAsArray(exc.device).some((d) =>
                   currentDevice.includes(d)
