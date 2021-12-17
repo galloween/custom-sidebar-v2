@@ -382,7 +382,7 @@
 
   function process(config) {
     if (!config || !Array.isArray(config.order)) {
-      finish(false, 'No config found');
+      finish(false, ['No config found or it does not have "order"', config]);
       return;
     }
     if (config.title) {
