@@ -65,7 +65,7 @@
       '%cCustom sidebar (ver.' + ver + '): ' + what,
       style[how],
       ...(asArray(stuff) || ['']),
-      $customSidebarV2
+      window.$customSidebarV2
     );
   }
 
