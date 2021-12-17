@@ -403,9 +403,13 @@
 
   function finish(success, error) {
     clearInterval(runInterval);
-    window.$customSidebarV2.Loaded = success ? 'success' : 'error';
-    !success && log('warn', 'Failed', error);
-    success && log('log', 'Loaded successfully!');
+    if (!success || error || window.$customSidebarV2.tryCounter > 10) {
+      window.$customSidebarV2.Loaded = 'error';
+      log('warn', 'Failed', error || '');
+    } else if (success) {
+      window.$customSidebarV2.Loaded = 'success';
+      log('log', 'Loaded successfully!');
+    }
   }
 
   function run() {
