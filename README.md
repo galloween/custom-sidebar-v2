@@ -71,7 +71,15 @@ Short example:
       "item": "Integrations",
       "href": "/config/integrations",
       "icon": "mdi:puzzle",
-      "order: 3
+      "order": 3
+    },
+    {
+      "item": "automations",
+      "bottom": true
+    },
+    {
+      "item": "settings",
+      "bottom": true
     }
   ]
  }
