@@ -140,11 +140,20 @@
     if (!root || !root.children) {
       return;
     }
-    return Array.from(root.children).find((element) => {
+    let lastdatapanel = Array.from(root.children).find((element) => {
       return (
         element.tagName == 'A' && element.getAttribute('data-panel') == 'config'
       );
     });
+    if (!lastdatapanel) {
+      lastpanel = Array.from(root.children).find((element) => {
+        return (
+          element.tagName == 'A' && element.getAttribute('data-panel') == 'media-browser'
+        );
+      });
+    }
+      
+    return lastpanel;
   }
 
   function setTitle(title) {
