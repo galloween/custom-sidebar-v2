@@ -105,11 +105,11 @@
     root = root && root.shadowRoot;
     root = root && root.querySelector('home-assistant-main');
     root = root && root.shadowRoot;
-    const drawerLayout = root && root.querySelector('app-drawer-layout');
+    const drawerLayout = root && root.querySelector('ha-drawer');
     !drawerLayout &&
       log(
         'warn',
-        'Cannot find "home-assistant home-assistant-main app-drawer-layout" element'
+        'Cannot find "home-assistant home-assistant-main ha-drawer" element'
       );
 
     return (window.$customSidebarV2.DrawerLayoutElement = drawerLayout);
@@ -121,14 +121,14 @@
     }
     const drawerLayout = getDrawerLayout();
     let sidebar =
-      drawerLayout && drawerLayout.querySelector('app-drawer ha-sidebar');
+      drawerLayout && drawerLayout.querySelector('ha-drawer ha-sidebar');
     sidebar = sidebar && sidebar.shadowRoot;
     window.$customSidebarV2.TitleElement =
       sidebar && sidebar.querySelector('.title');
     sidebar = sidebar && sidebar.querySelector('paper-listbox');
 
     !sidebar &&
-      log('warn', 'Cannot find "app-drawer ha-sidebar paper-listbox" element');
+      log('warn', 'Cannot find "ha-drawer ha-sidebar paper-listbox" element');
 
     return (window.$customSidebarV2.SideBarElement = sidebar);
   }
