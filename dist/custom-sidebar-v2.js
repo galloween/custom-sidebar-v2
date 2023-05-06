@@ -132,7 +132,25 @@
 
     return (window.$customSidebarV2.SideBarElement = sidebar);
   }
-
+  function searchforItem(itemName, root) {
+    if (itemName != '_grab_url') {
+      itemName = Array.from(root.children).find((element) => {
+        return (
+          element.tagName == 'A' && element.getAttribute('data-panel') == itemName
+        );
+      });
+   }
+    else
+    {
+      var pathArray = window.location.href.split( '/' );
+      var url = pathArray[0] + '//' + pathArray[2];
+      itemName = Array.from(root.children).find((element) => {
+        return (
+          url
+        );});
+    }
+    return itemName
+  }
   function getSidebarItem(root) {
     if (window.$customSidebarV2.SidebarItemElement) {
       return window.$customSidebarV2.SidebarItemElement;
@@ -140,11 +158,10 @@
     if (!root || !root.children) {
       return;
     }
-    return Array.from(root.children).find((element) => {
-      return (
-        element.tagName == 'A' && element.getAttribute('data-panel') == 'config'
-      );
-    });
+    let sidebaritem = searchforItem('config', root)
+    sidebaritem = sidebaritem ? sidebaritem : searchforItem('media-browser', root)
+    sidebaritem = sidebaritem ? sidebaritem : searchforItem('_grab_url', root)
+    return sidebaritem
   }
 
   function setTitle(title) {
