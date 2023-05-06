@@ -143,11 +143,8 @@
     else
     {
       var pathArray = window.location.href.split( '/' );
-      var url = pathArray[0] + '//' + pathArray[2];
-      itemName = Array.from(root.children).find((element) => {
-        return (
-          url
-        );});
+      var url = pathArray[0] + '//' + pathArray[2] + '/profile';
+      itemName = url
     }
     return itemName
   }
