@@ -156,8 +156,11 @@
       return;
     }
     let sidebaritem = searchforItem('config', root)
-    sidebaritem = sidebaritem ? sidebaritem : searchforItem('media-browser', root)
-    sidebaritem = sidebaritem ? sidebaritem : searchforItem('_grab_url', root)
+    sidebaritem = sidebaritem ? sidebaritem : searchforItem('media-browser', root);
+    sidebaritem = sidebaritem ? sidebaritem : searchforItem('history', root);
+    sidebaritem = sidebaritem ? sidebaritem : searchforItem('energy', root);
+    sidebaritem = sidebaritem ? sidebaritem : searchforItem('map', root);
+    sidebaritem = sidebaritem ? sidebaritem : searchforItem('_grab_url', root);
     return sidebaritem
   }
 
