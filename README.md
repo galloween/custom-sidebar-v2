@@ -1,15 +1,40 @@
 **Note**: some useful insights for troubleshooting in [this thread](https://github.com/Villhellm/custom-sidebar/issues/40#issuecomment-968252152). Also see [these notes](https://github.com/galloween/custom-sidebar-v2#notes).
 
-# Home Assistant Custom Sidebar v2
+# Home Assistant HA Custom Sidebar
+
+<details><summary>Preview!</summary>
+<p>
+  
+Before                     |           After
+:-------------------------:|:-------------------------:
+![](https://raw.githubusercontent.com/Villhellm/README_images/master/sidebar-before-example.png)  |  ![](https://raw.githubusercontent.com/Villhellm/README_images/master/sidebar-example.png)
+
+</p>
+</details> 
+
+
 Custom [HACS](https://hacs.xyz) `Lovelace Plugin` that allows you to rearrange, hide, and add [Home Assistant](https://www.home-assistant.io) sidebar menu items.
 
-This is a refactor of the original [Custom Sidebar plugin](https://github.com/Villhellm/custom-sidebar) by [@Villhellm](https://github.com/Villhellm) <br>
-to make it work with recent versions of `Home Assistant`.
+> This is a refactor of the original [Custom Sidebar plugin](https://github.com/Villhellm/custom-sidebar) by [@Villhellm](https://github.com/Villhellm) to make it work with recent versions of `Home Assistant`.
 
-[Villhellm](https://github.com/Villhellm)'s code was refactored with simplicity and performance in mind. <br>
+> [Villhellm](https://github.com/Villhellm)'s code was refactored with simplicity and performance in mind. 
 The YAML parser that was part of the original code has been removed and so the config should now be provided as JSON.
 
-## HACS Installation
+- [Installation](#installation)
+- [Configuration](#configuration)
+  * [Notes](#notes)
+  * [Exceptions](#exceptions)
+  * [Home Assistant built-in sidebar configuration options](#home-assistant-built-in-sidebar-configuration-options)
+  * [Combine with Iframe Panel to show external content inside Home Assitant](#combine-with-iframe-panel-to-show-external-content-inside-home-assitant)
+
+
+
+
+# Installation
+
+<details><summary>HACS Installation</summary>
+<p>
+
 Go to HACS / FrontEnd, add custom repository, then find it in the list and click Download.
 <table><tr><td>
 <img src="https://user-images.githubusercontent.com/2077754/141781008-96a47c6c-bba0-4f1e-aff5-b8cefb054edb.png">
@@ -26,8 +51,14 @@ frontend:
     - /hacsfiles/custom-sidebar-v2/custom-sidebar-v2.js
 ```
 
+</p>
+</details> 
 
-## Manual install
+
+
+<details><summary>Manual install</summary>
+<p>
+  
 <img src="https://user-images.githubusercontent.com/2077754/141674738-5ea08dea-a4aa-41d9-a246-feefde17bb45.png" width="700">
 
 - put `custom-sidebar-v2.js` in `<config directory>/www/`
@@ -37,6 +68,13 @@ frontend:
   extra_module_url:
     - /local/custom-sidebar-v2.js
 ```
+
+</p>
+</details> 
+
+
+
+
 
 ## Configuration
 config is now in `JSON` format (not yaml). <br>
@@ -141,4 +179,6 @@ then you can reorder iframe links, same as regular ones, in `sidebar-order.json`
 <img src="https://user-images.githubusercontent.com/2077754/142756355-21c96b37-130c-4af3-8a81-2de97261d1ff.png">
 
 -----------------------
-by [@galloween](https://github.com/galloween)
+Credits: <br>
+[Villhellm](https://github.com/Villhellm/custom-sidebar) | Original creator of custom-sidebar <br>
+[galloween](https://github.com/galloween) | maintaining the plugin `custom-sidebar-v2` <br>
