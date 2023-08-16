@@ -1,32 +1,6 @@
-**Note**: some useful insights for troubleshooting in [this thread](https://github.com/Villhellm/custom-sidebar/issues/40#issuecomment-968252152). Also see [these notes](https://github.com/galloween/custom-sidebar-v2#notes).
-
-# Home Assistant HA Custom Sidebar
-
-<details><summary>Preview!</summary>
-<p>
-  
-Before                     |           After
+Before                     |           After           
 :-------------------------:|:-------------------------:
-![](https://raw.githubusercontent.com/Villhellm/README_images/master/sidebar-before-example.png)  |  ![](https://raw.githubusercontent.com/Villhellm/README_images/master/sidebar-example.png)
-
-</p>
-</details> 
-
-
-Custom [HACS](https://hacs.xyz) `Lovelace Plugin` that allows you to rearrange, hide, and add [Home Assistant](https://www.home-assistant.io) sidebar menu items.
-
-> This is a refactor of the original [Custom Sidebar plugin](https://github.com/Villhellm/custom-sidebar) by [@Villhellm](https://github.com/Villhellm) to make it work with recent versions of `Home Assistant`.
-
-> [Villhellm](https://github.com/Villhellm)'s code was refactored with simplicity and performance in mind. 
-The YAML parser that was part of the original code has been removed and so the config should now be provided as JSON.
-
-- [Installation](#installation)
-- [Configuration](#configuration)
-  * [Notes](#notes)
-  * [Exceptions](#exceptions)
-  * [Home Assistant built-in sidebar configuration options](#home-assistant-built-in-sidebar-configuration-options)
-  * [Combine with Iframe Panel to show external content inside Home Assitant](#combine-with-iframe-panel-to-show-external-content-inside-home-assitant)
-
+<img src="https://raw.githubusercontent.com/Villhellm/README_images/master/sidebar-before-example.png" alt="alt text" width="60" height="800">  | <img src="https://raw.githubusercontent.com/Villhellm/README_images/master/sidebar-example.png" alt="alt text" width="60" height="800"> <td valign="top"> <h1 align="center">Custom Sidebar</h1> <p align="left"> Custom `Lovelace Plugin` that allows you to rearrange, hide, and add [Home Assistant](https://www.home-assistant.io) sidebar menu items.<br> <br>  ToC: <br> - [Installation](#installation) <br>  - [Configuration](#configuration) <br> — [Notes](#notes) <br> — [Exceptions](#exceptions) <br> — [Home Assistant built-in sidebar configuration options](#home-assistant-built-in-sidebar-configuration-options) <br> — [Combine with Iframe Panel to show external content inside Home Assitant](#combine-with-iframe-panel-to-show-external-content-inside-home-assitant) <br> - [Credits](#credits) <br>
 
 
 
@@ -179,6 +153,6 @@ then you can reorder iframe links, same as regular ones, in `sidebar-order.json`
 <img src="https://user-images.githubusercontent.com/2077754/142756355-21c96b37-130c-4af3-8a81-2de97261d1ff.png">
 
 -----------------------
-Credits: <br>
+## Credits
 [Villhellm](https://github.com/Villhellm/custom-sidebar) | Original creator of custom-sidebar <br>
 [galloween](https://github.com/galloween) | maintaining the plugin `custom-sidebar-v2` <br>
