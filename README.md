@@ -51,12 +51,27 @@ frontend:
 
 
 ## Configuration
-config is now in `JSON` format (not yaml). <br>
+Config File is now in `JSON` format (not yaml). You can convert yaml config into json [here](https://jsonformatter.org/yaml-to-json)<br>
 Save it as `sidebar-order.json` and put it in `<config directory>/www/`. <br>
-If using manuall install, you can include the config object directly in the .js file (follow comments there).
+> Recomanded use the [example config](https://github.com/xZetsubou/custom-sidebar-v2/blob/main/sidebar-order.json) and edit it however you want
+### Order
 
-For full example see this: https://raw.githubusercontent.com/galloween/custom-sidebar-v2/main/sidebar-order.json <br>
-Also check [original repo docs](https://github.com/Villhellm/custom-sidebar/blob/master/README.md) for explanations.
+| Name | Type | Requirement | Description
+| ---- | ---- | ------- | -----------
+| order | list([item](#item-options)) | **Required** | List of items you would like to rearrange.
+
+### Item options
+| Name | Type | Requirement | Description
+| ---- | ---- | ------- | -----------
+| item | string | **Required** | This is a string that will be checked for in the display name of the sidebar item. It can be a substring such as `developer` instead of `Developer Tools`. It is not case sensitive.
+| name | string | **Optional** | Change the name of the existing item to this string.
+| order | number | **Optional** | Set order number for the item no need to rearrange config.
+| bottom | boolean | **Optional** | Setting this option to `true` will group the item with the bottom items (Configuration, Developer Tools, etc) instead of at the top.
+| hide | boolean | **Optional** | Hide item in sidebar.
+| exact | boolean | **Optional** | Specify whether the item string match will be exact match instead of substring.
+| href | string | **Optional** | Define the href for the sidebar link.
+| icon | string | **Optional** | Set the icon of the sidebar item.
+| new_item | boolean | **Optional** | Set to true to create a new link in the sidebar. Using this option now makes `item`, `href`, and `icon` required.
 
 Short example:
 ```
@@ -90,17 +105,34 @@ Short example:
 ```
 
 ## Notes
-- all items in config.order should have unique "item" property
-- check out [this post](https://github.com/Villhellm/custom-sidebar/issues/40#issuecomment-982064937) on how to find the name of the menu item
-- items with "hide: true" are not considered in new order,
-- all other items will be ordered according to their (optional) "order" property **OR** in the order of appearance in config.order
-- if using "order" property, make sure either all items (except hidden) have this property, or none of them (otherwise order may be messed up).
-- any items present in Sidebar, but not in config.order, will be shown on the **bottom** of the top part of the list
-- when using **Exceptions**, pay attention to "base_order" property - if it's set to "false", the main config.order will be ignored, leaving you with default sidebar (which now should be modified with the exception's order)
-- if you seem to be **stuck with old config**, try clearing site data - [instruction here](https://github.com/Villhellm/custom-sidebar/issues/40#issuecomment-982944888)
+
+<details><summary>Show Notes.</summary>
+<p>
+
+- all items in config.order should have unique "item" property <br>
+- check out [this post](https://github.com/Villhellm/custom-sidebar/issues/40#issuecomment-982064937) on how to find the name of the menu item <br>
+- items with "hide: true" are not considered in new order, <br>
+- all other items will be ordered according to their (optional) "order" property **OR** in the order of appearance in config.order <br>
+- if using "order" property, make sure either all items (except hidden) have this property, or none of them (otherwise order may be messed up). <br>
+- any items present in Sidebar, but not in config.order, will be shown on the **bottom** of the top part of the list <br>
+- when using **Exceptions**, pay attention to "base_order" property - if it's set to "false", the main config.order will be ignored, leaving you with default sidebar (which now should be modified with the exception's order) <br>
+- if you seem to be **stuck with old config**, try clearing site data - [instruction here](https://github.com/Villhellm/custom-sidebar/issues/40#issuecomment-982944888) <br>
+
+</p>
+</details>
 
 ## Exceptions
 You can define user-specific order using `exceptions` feature (see [details in original repo](https://github.com/Villhellm/custom-sidebar#exceptions))
+Exceptions can be used if you would like to define an order for a specific user/device.
+
+| Name | Type | Requirement | Description
+| ---- | ---- | ------- | -----------
+| base_order | bool | **Optional** | If true this will run rearrangement for your base order configuration before running this exception. Default is false.
+| user | string, list | **Optional** | Home Assistant user name you would like to display this order for.
+| device | string, list | **Optional** | Type of device you would like to display this order for. ex: ipad, iphone, macintosh, windows, android
+| not_user | string, list | **Optional** | Every Home Assistant user name *except* this user name.
+| not_device | string, list | **Optional** | Every device *except* this device. ex: ipad, iphone, macintosh, windows, android
+| order | [order](#order) | **Required** | Define and order. 
 ```
 {
   "exceptions": [
