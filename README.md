@@ -9,7 +9,8 @@ Before                     |           After
 <details><summary><h3>HACS Installation</h3></summary>
 <p>
 
-Go to HACS / FrontEnd, add custom repository, then find it in the list and click Download.
+Go to HACS / FrontEnd, add custom repository, then find it in the list and click Download. <br>
+Custom Repo: https://github.com/xZetsubou/ha-custom-sidebar
 <table><tr><td>
 <img src="https://user-images.githubusercontent.com/2077754/141781008-96a47c6c-bba0-4f1e-aff5-b8cefb054edb.png">
 </td><td>
