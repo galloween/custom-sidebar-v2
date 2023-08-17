@@ -1,4 +1,6 @@
 {
     "name": "HA Custom Sidebar",
-    "render_readme": true
+    "render_readme": true,
+    "filename": "ha-custom-sidebar.js",
+    "content_in_root": false
 }
