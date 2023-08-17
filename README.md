@@ -6,7 +6,7 @@ Before                     |           After
 
 # Installation
 
-<details><summary>HACS Installation</summary>
+<details><summary><h3>HACS Installation</h3></summary>
 <p>
 
 Go to HACS / FrontEnd, add custom repository, then find it in the list and click Download.
@@ -30,7 +30,7 @@ frontend:
 
 
 
-<details><summary>Manual install</summary>
+<details><summary><h3>Manual install</h3></summary>
 <p>
   
 <img src="https://user-images.githubusercontent.com/2077754/141674738-5ea08dea-a4aa-41d9-a246-feefde17bb45.png" width="700">
@@ -48,9 +48,9 @@ frontend:
 
 
 
+<br>
 
-
-## Configuration
+# Configuration
 Config File is now in `JSON` format (not yaml). You can convert yaml config into json [here](https://jsonformatter.org/yaml-to-json)<br>
 Save it as `sidebar-order.json` and put it in `<config directory>/www/`. <br>
 > Recomanded use the [example config](https://github.com/xZetsubou/custom-sidebar-v2/blob/main/sidebar-order.json) and edit it however you want
