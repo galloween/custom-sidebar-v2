@@ -139,7 +139,7 @@
           element.tagName == 'A' && element.getAttribute('data-panel') == itemName
         );
       });
-   }
+    }
     else
     {
       var pathArray = window.location.href.split( '/' );
@@ -148,6 +148,7 @@
     }
     return itemName
   }
+
   function getSidebarItem(root) {
     if (window.$customSidebarV2.SidebarItemElement) {
       return window.$customSidebarV2.SidebarItemElement;
@@ -295,6 +296,12 @@
     try {
       const cln =
         config_entry.itemElement || getSidebarItem(elements).cloneNode(true);
+
+      const _notification_badge = 
+        cln.querySelector("[class*='-badge']")
+      if (_notification_badge) {
+        _notification_badge.remove()
+      }
       if (cln) {
         //
         updateIcon(cln, config_entry.icon);
