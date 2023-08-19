@@ -17,7 +17,7 @@
   //------------------
 
   !window.$customSidebarV2 &&
-    (window.$customSidebarV2 = { tryCounter: 0, Loaded: false });
+    (window.$customSidebarV2 = { tryCounter: 0, try_limit: 20, Loaded: false });
 
   const ver = '301217_2359';
 
@@ -106,7 +106,8 @@
     root = root && root.querySelector('home-assistant-main');
     root = root && root.shadowRoot;
     const drawerLayout = root && root.querySelector('ha-drawer');
-    !drawerLayout &&
+
+    if (!drawerLayout && window.$customSidebarV2.tryCounter > window.$customSidebarV2.tryCounter)
       log(
         'warn',
         'Cannot find "home-assistant home-assistant-main ha-drawer" element'
@@ -120,6 +121,7 @@
       return window.$customSidebarV2.SideBarElement;
     }
     const drawerLayout = getDrawerLayout();
+
     let sidebar =
       drawerLayout && drawerLayout.querySelector('ha-drawer ha-sidebar');
     sidebar = sidebar && sidebar.shadowRoot;
@@ -127,7 +129,7 @@
       sidebar && sidebar.querySelector('.title');
     sidebar = sidebar && sidebar.querySelector('paper-listbox');
 
-    !sidebar &&
+    if (!sidebar && window.$customSidebarV2.tryCounter > window.$customSidebarV2.try_limit)
       log('warn', 'Cannot find "ha-drawer ha-sidebar paper-listbox" element');
 
     return (window.$customSidebarV2.SideBarElement = sidebar);
@@ -437,7 +439,7 @@
 
   function finish(success, error) {
     clearInterval(runInterval);
-    if (!success || error || window.$customSidebarV2.tryCounter > 10) {
+    if (!success || error || window.$customSidebarV2.tryCounter > window.$customSidebarV2.try_limit) {
       window.$customSidebarV2.Loaded = 'error';
       log('warn', 'Failed', error || '');
     } else if (success) {
@@ -502,10 +504,10 @@
           finish('Custom Sidebar already loaded');
         }
         if (
-          ++window.$customSidebarV2.tryCounter > 10 &&
+          ++window.$customSidebarV2.tryCounter > window.$customSidebarV2.try_limit &&
           !window.$customSidebarV2.Loaded
         ) {
-          finish(false, 'Tried 10 times and gave up');
+          finish(false, 'Tried ' + window.$customSidebarV2.try_limit + 'times and gave up');
         }
       }
     } catch (e) {
@@ -513,9 +515,13 @@
     }
   }
 
-  if (!window.$customSidebarV2.Loaded) {
-    runInterval = setInterval(run, 1000);
-  } else {
-    finish('Already loaded');
-  }
+  (async () => {
+    while (customElements.get("home-assistant") === undefined)
+      await new Promise(resolve => window.setTimeout(resolve, 100));
+  
+    if (!window.$customSidebarV2.Loaded) {
+      runInterval = setInterval(run, 50);
+
+    }
+  })();
 })();
