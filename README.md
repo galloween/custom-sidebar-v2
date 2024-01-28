@@ -23,7 +23,7 @@ Custom Repo: https://github.com/xZetsubou/ha-custom-sidebar
 ```
 frontend:
   extra_module_url:
-    - /hacsfiles/custom-sidebar-v2/custom-sidebar-v2.js
+    - /hacsfiles/ha-custom-sidebar/ha-custom-sidebar.js
 ```
 
 </p>
