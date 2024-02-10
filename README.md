@@ -1,16 +1,16 @@
-**Note**: some useful insights for troubleshooting in [this thread](https://github.com/Villhellm/custom-sidebar/issues/40#issuecomment-968252152). Also see [these notes](https://github.com/galloween/custom-sidebar-v2#notes).
+Before                     |           After           
+:-------------------------:|:-------------------------:
+<img src="https://raw.githubusercontent.com/Villhellm/README_images/master/sidebar-before-example.png" alt="alt text" width="60" height="800">  | <img src="https://raw.githubusercontent.com/Villhellm/README_images/master/sidebar-example.png" alt="alt text" width="60" height="800"> <td valign="top"> <h1 align="center">Custom Sidebar</h1> <p align="left"> Custom `Lovelace Plugin` that allows you to rearrange, hide, and add [Home Assistant](https://www.home-assistant.io) sidebar menu items.<br> <br>  TOC: <br> - [Installation](#installation) <br>  - [Configuration](#configuration) <br> — [Notes](#notes) <br> — [Exceptions](#exceptions) <br> — [Home Assistant built-in sidebar configuration options](#home-assistant-built-in-sidebar-configuration-options) <br> — [Combine with Iframe Panel to show external content inside Home Assitant](#combine-with-iframe-panel-to-show-external-content-inside-home-assitant) <br> - [Credits](#credits) <br>
 
-# Home Assistant Custom Sidebar v2
-Custom [HACS](https://hacs.xyz) `Lovelace Plugin` that allows you to rearrange, hide, and add [Home Assistant](https://www.home-assistant.io) sidebar menu items.
 
-This is a refactor of the original [Custom Sidebar plugin](https://github.com/Villhellm/custom-sidebar) by [@Villhellm](https://github.com/Villhellm) <br>
-to make it work with recent versions of `Home Assistant`.
 
-[Villhellm](https://github.com/Villhellm)'s code was refactored with simplicity and performance in mind. <br>
-The YAML parser that was part of the original code has been removed and so the config should now be provided as JSON.
+# Installation
 
-## HACS Installation
-Go to HACS / FrontEnd, add custom repository, then find it in the list and click Download.
+<details><summary><h3>HACS Installation</h3></summary>
+<p>
+
+Go to HACS / FrontEnd, add custom repository, then find it in the list and click Download. <br>
+Custom Repo: https://github.com/xZetsubou/ha-custom-sidebar
 <table><tr><td>
 <img src="https://user-images.githubusercontent.com/2077754/141781008-96a47c6c-bba0-4f1e-aff5-b8cefb054edb.png">
 </td><td>
@@ -23,11 +23,17 @@ Go to HACS / FrontEnd, add custom repository, then find it in the list and click
 ```
 frontend:
   extra_module_url:
-    - /hacsfiles/custom-sidebar-v2/custom-sidebar-v2.js
+    - /hacsfiles/ha-custom-sidebar/ha-custom-sidebar.js
 ```
 
+</p>
+</details> 
 
-## Manual install
+
+
+<details><summary><h3>Manual install</h3></summary>
+<p>
+  
 <img src="https://user-images.githubusercontent.com/2077754/141674738-5ea08dea-a4aa-41d9-a246-feefde17bb45.png" width="700">
 
 - put `custom-sidebar-v2.js` in `<config directory>/www/`
@@ -38,13 +44,35 @@ frontend:
     - /local/custom-sidebar-v2.js
 ```
 
-## Configuration
-config is now in `JSON` format (not yaml). <br>
-Save it as `sidebar-order.json` and put it in `<config directory>/www/`. <br>
-If using manuall install, you can include the config object directly in the .js file (follow comments there).
+</p>
+</details> 
 
-For full example see this: https://raw.githubusercontent.com/galloween/custom-sidebar-v2/main/sidebar-order.json <br>
-Also check [original repo docs](https://github.com/Villhellm/custom-sidebar/blob/master/README.md) for explanations.
+
+
+<br>
+
+# Configuration
+Config File is now in `JSON` format (not yaml). You can convert yaml config into json [here](https://jsonformatter.org/yaml-to-json)<br>
+Save it as `sidebar-order.json` and put it in `<config directory>/www/`. <br>
+> Recomanded use the [example config](https://github.com/xZetsubou/custom-sidebar-v2/blob/main/sidebar-order.json) and edit it however you want
+### Order
+
+| Name | Type | Requirement | Description
+| ---- | ---- | ------- | -----------
+| order | list([item](#item-options)) | **Required** | List of items you would like to rearrange.
+
+### Item options
+| Name | Type | Requirement | Description
+| ---- | ---- | ------- | -----------
+| item | string | **Required** | This is a string that will be checked for in the display name of the sidebar item. It can be a substring such as `developer` instead of `Developer Tools`. It is not case sensitive.
+| name | string | **Optional** | Change the name of the existing item to this string.
+| order | number | **Optional** | Set order number for the item no need to rearrange config.
+| bottom | boolean | **Optional** | Setting this option to `true` will group the item with the bottom items (Configuration, Developer Tools, etc) instead of at the top.
+| hide | boolean | **Optional** | Hide item in sidebar.
+| exact | boolean | **Optional** | Specify whether the item string match will be exact match instead of substring.
+| href | string | **Optional** | Define the href for the sidebar link.
+| icon | string | **Optional** | Set the icon of the sidebar item.
+| new_item | boolean | **Optional** | Set to true to create a new link in the sidebar. Using this option now makes `item`, `href`, and `icon` required.
 
 Short example:
 ```
@@ -78,17 +106,34 @@ Short example:
 ```
 
 ## Notes
-- all items in config.order should have unique "item" property
-- check out [this post](https://github.com/Villhellm/custom-sidebar/issues/40#issuecomment-982064937) on how to find the name of the menu item
-- items with "hide: true" are not considered in new order,
-- all other items will be ordered according to their (optional) "order" property **OR** in the order of appearance in config.order
-- if using "order" property, make sure either all items (except hidden) have this property, or none of them (otherwise order may be messed up).
-- any items present in Sidebar, but not in config.order, will be shown on the **bottom** of the top part of the list
-- when using **Exceptions**, pay attention to "base_order" property - if it's set to "false", the main config.order will be ignored, leaving you with default sidebar (which now should be modified with the exception's order)
-- if you seem to be **stuck with old config**, try clearing site data - [instruction here](https://github.com/Villhellm/custom-sidebar/issues/40#issuecomment-982944888)
+
+<details><summary>Show Notes.</summary>
+<p>
+
+- all items in config.order should have unique "item" property <br>
+- check out [this post](https://github.com/Villhellm/custom-sidebar/issues/40#issuecomment-982064937) on how to find the name of the menu item <br>
+- items with "hide: true" are not considered in new order, <br>
+- all other items will be ordered according to their (optional) "order" property **OR** in the order of appearance in config.order <br>
+- if using "order" property, make sure either all items (except hidden) have this property, or none of them (otherwise order may be messed up). <br>
+- any items present in Sidebar, but not in config.order, will be shown on the **bottom** of the top part of the list <br>
+- when using **Exceptions**, pay attention to "base_order" property - if it's set to "false", the main config.order will be ignored, leaving you with default sidebar (which now should be modified with the exception's order) <br>
+- if you seem to be **stuck with old config**, try clearing site data - [instruction here](https://github.com/Villhellm/custom-sidebar/issues/40#issuecomment-982944888) <br>
+
+</p>
+</details>
 
 ## Exceptions
 You can define user-specific order using `exceptions` feature (see [details in original repo](https://github.com/Villhellm/custom-sidebar#exceptions))
+Exceptions can be used if you would like to define an order for a specific user/device.
+
+| Name | Type | Requirement | Description
+| ---- | ---- | ------- | -----------
+| base_order | bool | **Optional** | If true this will run rearrangement for your base order configuration before running this exception. Default is false.
+| user | string, list | **Optional** | Home Assistant user name you would like to display this order for.
+| device | string, list | **Optional** | Type of device you would like to display this order for. ex: ipad, iphone, macintosh, windows, android
+| not_user | string, list | **Optional** | Every Home Assistant user name *except* this user name.
+| not_device | string, list | **Optional** | Every device *except* this device. ex: ipad, iphone, macintosh, windows, android
+| order | [order](#order) | **Required** | Define and order. 
 ```
 {
   "exceptions": [
@@ -141,4 +186,6 @@ then you can reorder iframe links, same as regular ones, in `sidebar-order.json`
 <img src="https://user-images.githubusercontent.com/2077754/142756355-21c96b37-130c-4af3-8a81-2de97261d1ff.png">
 
 -----------------------
-by [@galloween](https://github.com/galloween)
+## Credits
+[Villhellm](https://github.com/Villhellm/custom-sidebar) | Original creator of custom-sidebar <br>
+[galloween](https://github.com/galloween) | maintaining the plugin `custom-sidebar-v2` <br>

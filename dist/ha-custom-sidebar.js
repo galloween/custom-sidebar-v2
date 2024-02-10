@@ -17,7 +17,7 @@
   //------------------
 
   !window.$customSidebarV2 &&
-    (window.$customSidebarV2 = { tryCounter: 0, Loaded: false });
+    (window.$customSidebarV2 = { tryCounter: 0, try_limit: 20, Loaded: false });
 
   const ver = '301217_2359';
 
@@ -105,11 +105,12 @@
     root = root && root.shadowRoot;
     root = root && root.querySelector('home-assistant-main');
     root = root && root.shadowRoot;
-    const drawerLayout = root && root.querySelector('app-drawer-layout');
-    !drawerLayout &&
+    const drawerLayout = root && root.querySelector('ha-drawer');
+
+    if (!drawerLayout && window.$customSidebarV2.tryCounter > window.$customSidebarV2.tryCounter)
       log(
         'warn',
-        'Cannot find "home-assistant home-assistant-main app-drawer-layout" element'
+        'Cannot find "home-assistant home-assistant-main ha-drawer" element'
       );
 
     return (window.$customSidebarV2.DrawerLayoutElement = drawerLayout);
@@ -120,17 +121,34 @@
       return window.$customSidebarV2.SideBarElement;
     }
     const drawerLayout = getDrawerLayout();
+
     let sidebar =
-      drawerLayout && drawerLayout.querySelector('app-drawer ha-sidebar');
+      drawerLayout && drawerLayout.querySelector('ha-drawer ha-sidebar');
     sidebar = sidebar && sidebar.shadowRoot;
     window.$customSidebarV2.TitleElement =
       sidebar && sidebar.querySelector('.title');
     sidebar = sidebar && sidebar.querySelector('paper-listbox');
 
-    !sidebar &&
-      log('warn', 'Cannot find "app-drawer ha-sidebar paper-listbox" element');
+    if (!sidebar && window.$customSidebarV2.tryCounter > window.$customSidebarV2.try_limit)
+      log('warn', 'Cannot find "ha-drawer ha-sidebar paper-listbox" element');
 
     return (window.$customSidebarV2.SideBarElement = sidebar);
+  }
+  function searchforItem(itemName, root) {
+    if (itemName != '_grab_url') {
+      itemName = Array.from(root.children).find((element) => {
+        return (
+          element.tagName == 'A' && element.getAttribute('data-panel') == itemName
+        );
+      });
+    }
+    else
+    {
+      var pathArray = window.location.href.split( '/' );
+      var url = pathArray[0] + '//' + pathArray[2] + '/profile';
+      itemName = url
+    }
+    return itemName
   }
 
   function getSidebarItem(root) {
@@ -140,11 +158,13 @@
     if (!root || !root.children) {
       return;
     }
-    return Array.from(root.children).find((element) => {
-      return (
-        element.tagName == 'A' && element.getAttribute('data-panel') == 'config'
-      );
-    });
+    let sidebaritem = searchforItem('config', root)
+    sidebaritem = sidebaritem ? sidebaritem : searchforItem('media-browser', root);
+    sidebaritem = sidebaritem ? sidebaritem : searchforItem('history', root);
+    sidebaritem = sidebaritem ? sidebaritem : searchforItem('energy', root);
+    sidebaritem = sidebaritem ? sidebaritem : searchforItem('map', root);
+    sidebaritem = sidebaritem ? sidebaritem : searchforItem('_grab_url', root);
+    return sidebaritem
   }
 
   function setTitle(title) {
@@ -278,6 +298,12 @@
     try {
       const cln =
         config_entry.itemElement || getSidebarItem(elements).cloneNode(true);
+
+      const _notification_badge = 
+        cln.querySelector("[class*='-badge']")
+      if (_notification_badge) {
+        _notification_badge.remove()
+      }
       if (cln) {
         //
         updateIcon(cln, config_entry.icon);
@@ -413,7 +439,7 @@
 
   function finish(success, error) {
     clearInterval(runInterval);
-    if (!success || error || window.$customSidebarV2.tryCounter > 10) {
+    if (!success || error || window.$customSidebarV2.tryCounter > window.$customSidebarV2.try_limit) {
       window.$customSidebarV2.Loaded = 'error';
       log('warn', 'Failed', error || '');
     } else if (success) {
@@ -478,10 +504,10 @@
           finish('Custom Sidebar already loaded');
         }
         if (
-          ++window.$customSidebarV2.tryCounter > 10 &&
+          ++window.$customSidebarV2.tryCounter > window.$customSidebarV2.try_limit &&
           !window.$customSidebarV2.Loaded
         ) {
-          finish(false, 'Tried 10 times and gave up');
+          finish(false, 'Tried ' + window.$customSidebarV2.try_limit + 'times and gave up');
         }
       }
     } catch (e) {
@@ -489,9 +515,13 @@
     }
   }
 
-  if (!window.$customSidebarV2.Loaded) {
-    runInterval = setInterval(run, 1000);
-  } else {
-    finish('Already loaded');
-  }
+  (async () => {
+    while (customElements.get("home-assistant") === undefined)
+      await new Promise(resolve => window.setTimeout(resolve, 100));
+  
+    if (!window.$customSidebarV2.Loaded) {
+      runInterval = setInterval(run, 50);
+
+    }
+  })();
 })();
